@@ -1,0 +1,5 @@
+
+window.UNIMARKET_CONFIG = {
+  SUPABASE_URL: "ใส่_PROJECT_URL_ตรงนี้",
+  SUPABASE_ANON_KEY: "ใส่_PUBLISHABLE_KEY_ตรงนี้"
+};
