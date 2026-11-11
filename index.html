@@ -300,12 +300,7 @@
 
   <!-- JavaScript Logic -->
   <script>
-    const initialProducts = [
-      { id: 1, title: 'หนังสือ Calculus 1 Edition ล่าสุด', price: 250, category: 'หนังสือ', seller: 'ร้านหนังสือเรียน', contact: '0812345678', pin: '1234', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', desc: 'เนื้อหาครบถ้วน พิมพ์สี่สีทั้งเล่ม พร้อมส่งฟรี' },
-      { id: 2, title: 'iPad Air 5 64GB WiFi', price: 19900, category: 'ไอที', seller: 'iStore Official', contact: '@istore_th', pin: '1234', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', desc: 'สินค้าคุณภาพดี สเปคแรง ตอบโจทย์การเรียน การทำงาน' },
-      { id: 3, title: 'เสื้อช็อปมหาลัย ไซส์ L', price: 450, category: 'แฟชั่น', seller: 'Campus Uniform', contact: '0898765432', pin: '1234', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', desc: 'เนื้อผ้าดี ทรงสวย สวมใส่สบาย ระบายอากาศได้ดี' },
-      { id: 4, title: 'พัดลมมินิมอล Hatari', price: 590, category: 'ของใช้ทั่วไป', seller: 'Home Supply', contact: '0821112222', pin: '1234', image: 'https://images.unsplash.com/photo-1618941723628-e2740a34b2fe?w=400', desc: 'ดีไซน์สวยเข้ากับห้อง ลมแรง 3 ระดับ สินค้าใหม่' }
-    ];
+   const initialProducts = [];
 
     let products = JSON.parse(localStorage.getItem('unimarket_products')) || initialProducts;
     let wishlist = JSON.parse(localStorage.getItem('unimarket_wishlist')) || [];
