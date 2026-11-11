@@ -14,11 +14,11 @@
         extend: {
           colors: {
             brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
             }
           }
         }
@@ -29,12 +29,12 @@
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .glassmorphism {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
     .dark .glassmorphism {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.8);
     }
   </style>
 </head>
@@ -47,11 +47,11 @@
         
         <!-- Brand Logo -->
         <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/30">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-emerald-500/20">
             U
           </div>
           <div>
-            <span class="text-xl font-black tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+            <span class="text-xl font-black tracking-tight bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
               UniMarket
             </span>
             <span class="block text-[10px] font-bold tracking-widest uppercase text-slate-400 -mt-1">Open Marketplace</span>
@@ -61,7 +61,7 @@
         <!-- Search Box -->
         <div class="flex-1 max-w-lg relative hidden md:block">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ค้นหาสินค้า, ร้านค้า, หมวดหมู่..." class="w-full pl-11 pr-4 py-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-transparent focus:border-indigo-500 dark:focus:border-indigo-400 rounded-2xl text-sm focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all">
+          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ค้นหาสินค้า, ร้านค้า, หมวดหมู่..." class="w-full pl-11 pr-4 py-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-transparent focus:border-emerald-500 dark:focus:border-emerald-400 rounded-2xl text-sm focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all">
         </div>
 
         <!-- Right Action Buttons -->
@@ -72,8 +72,8 @@
             <i class="fa-solid fa-sun hidden dark:block text-lg text-amber-400"></i>
           </button>
 
-          <!-- Post Item Button (เปิดให้ทุกคนลงขายได้) -->
-          <button onclick="openSellModal()" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-4 py-2.5 rounded-2xl text-sm font-bold transition shadow-lg shadow-indigo-500/25 active:scale-95">
+          <!-- Post Item Button -->
+          <button onclick="openSellModal()" class="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-4 py-2.5 rounded-2xl text-sm font-bold transition shadow-lg shadow-emerald-600/20 active:scale-95">
             <i class="fa-solid fa-plus-circle"></i> 
             <span>ลงขายสินค้า</span>
           </button>
@@ -94,21 +94,21 @@
     <!-- Mobile Search -->
     <div class="md:hidden relative">
       <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-      <input type="text" id="searchInputMobile" oninput="handleSearch()" placeholder="ค้นหาสินค้า..." class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border-0 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <input type="text" id="searchInputMobile" oninput="handleSearch()" placeholder="ค้นหาสินค้า..." class="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border-0 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
     </div>
 
     <!-- Hero Banner -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-700 to-purple-800 text-white p-8 sm:p-12 shadow-2xl shadow-indigo-500/10">
-      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-900 text-white p-8 sm:p-12 shadow-2xl shadow-emerald-950/20">
+      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
       <div class="relative z-10 max-w-2xl">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 backdrop-blur-md text-xs font-semibold rounded-full mb-4 text-indigo-200 border border-white/10">
-          <i class="fa-solid fa-globe text-emerald-400"></i> เปิดกว้างสำหรับทุกคนที่มีลิงก์นี้
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-emerald-500/20 backdrop-blur-md text-xs font-semibold rounded-full mb-4 text-emerald-300 border border-emerald-500/30">
+          <i class="fa-solid fa-globe text-emerald-400"></i> ตลาดนัดออนไลน์สำหรับทุกคน
         </span>
         <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-          พื้นที่ตลาดออนไลน์ <br><span class="bg-gradient-to-r from-amber-200 via-pink-200 to-white bg-clip-text text-transparent">ของพวกเราทุกคน</span>
+          ลงขายได้ทันที <br><span class="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">พร้อมใส่ช่องทางติดต่อตรง</span>
         </h1>
-        <p class="mt-3 text-indigo-100 text-sm sm:text-base font-medium leading-relaxed">
-          มีของอยากปล่อย หรืออยากเริ่มเปิดร้าน? กดปุ่มลงขายสินค้าด้านบนได้ทันที ใครเข้ามาในลิงก์นี้ก็สามารถเพิ่มรายการสินค้าของตัวเองได้ง่ายๆ!
+        <p class="mt-3 text-slate-300 text-sm sm:text-base font-medium leading-relaxed">
+          มีของอยากส่งต่อ หรือสินค้าใหม่อยากลงขาย? กดปุ่มลงขายสินค้าด้านบน ใส่รายละเอียดและ Line / เบอร์โทรศัพท์ ให้ลูกค้าติดต่อคุณได้ทันที!
         </p>
       </div>
     </div>
@@ -119,8 +119,8 @@
     <!-- Section Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-xl font-bold tracking-tight">สินค้าแนะนำล่าสุด</h2>
-        <p class="text-xs text-slate-400">คลิกที่สินค้าเพื่อดูรายละเอียด หรือกดใส่ตะกร้าได้ทันที</p>
+        <h2 class="text-xl font-bold tracking-tight">รายการสินค้าทั้งหมด</h2>
+        <p class="text-xs text-slate-400">กดที่สินค้าเพื่อดูรายละเอียดและช่องทางติดต่อผู้ขาย</p>
       </div>
       <span id="productCount" class="text-xs font-semibold text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">0 รายการ</span>
     </div>
@@ -129,7 +129,7 @@
     <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-5"></div>
   </main>
 
-  <!-- Modal: ลงขายสินค้า (ทุกคนที่มีลิงก์สามารถใช้ฟอร์มนี้ได้) -->
+  <!-- Modal: ลงขายสินค้า (พร้อมช่องทางติดต่อ) -->
   <div id="sellModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
       <button onclick="closeSellModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center justify-center transition">
@@ -138,25 +138,25 @@
 
       <div class="mb-6">
         <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-store text-indigo-500"></i> ลงขายสินค้าใหม่
+          <i class="fa-solid fa-store text-emerald-500"></i> ลงขายสินค้าใหม่
         </h2>
-        <p class="text-xs text-slate-400 mt-1">กรอกข้อมูลสินค้าของคุณเพื่อให้ทุกคนในเว็บเห็นสินค้าของคุณได้ทันที</p>
+        <p class="text-xs text-slate-400 mt-1">กรอกข้อมูลสินค้าและช่องทางติดต่อของคุณให้ครบถ้วน</p>
       </div>
 
       <form id="sellForm" onsubmit="handleCreateProduct(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">ชื่อสินค้า *</label>
-          <input type="text" required id="sellTitle" placeholder="เช่น หูฟังไร้สาย, เสื้อฮู้ด..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition">
+          <input type="text" required id="sellTitle" placeholder="เช่น หูฟังไร้สาย, เสื้อฮู้ด..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">ราคา (บาท) *</label>
-            <input type="number" required id="sellPrice" min="0" placeholder="0.00" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition">
+            <input type="number" required id="sellPrice" min="0" placeholder="0.00" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
           </div>
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">หมวดหมู่ *</label>
-            <select id="sellCategory" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition">
+            <select id="sellCategory" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
               <option value="ไอที">ไอที & Gadget</option>
               <option value="แฟชั่น">แฟชั่น & เครื่องแต่งกาย</option>
               <option value="หนังสือ">หนังสือ & การเรียน</option>
@@ -166,29 +166,34 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">ชื่อผู้ขาย / ร้านค้า *</label>
-          <input type="text" required id="sellSeller" placeholder="ชื่อของคุณ หรือ ชื่อร้านค้า" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">ชื่อผู้ขาย / ชื่อร้าน *</label>
+          <input type="text" required id="sellSeller" placeholder="เช่น ร้านคุณเอ, นามสมมติ..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
+        </div>
+
+        <!-- เพิ่มช่องทางติดต่อ -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">ช่องทางติดต่อผู้ขาย *</label>
+          <input type="text" required id="sellContact" placeholder="เช่น โทร 081-xxx-xxxx / Line: @xxx" class="w-full px-4 py-2.5 border border-emerald-300 dark:border-emerald-800 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
         </div>
 
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">ลิงก์รูปภาพ (URL) *</label>
-          <input type="url" required id="sellImage" placeholder="https://..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition">
-          <span class="text-[10px] text-slate-400 mt-1 block">* วางลิงก์รูปภาพจากอินเทอร์เน็ต</span>
+          <input type="url" required id="sellImage" placeholder="https://..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
         </div>
 
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">รายละเอียดสินค้า</label>
-          <textarea id="sellDesc" rows="3" placeholder="อธิบายจุดเด่น สภาพสินค้า หรือช่องทางติดต่อเพิ่มเติม..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition"></textarea>
+          <textarea id="sellDesc" rows="3" placeholder="อธิบายสภาพสินค้า หรือเงื่อนไขนัดรับ..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition"></textarea>
         </div>
 
-        <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/25 active:scale-98">
-          🚀 โพสต์ลงขายทันที
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl transition shadow-lg shadow-emerald-600/20 active:scale-98">
+          🚀 ลงขายสินค้าทันที
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal: รายละเอียดสินค้า -->
+  <!-- Modal: รายละเอียดสินค้า + แสดงช่องทางติดต่อ -->
   <div id="productModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative flex flex-col md:flex-row max-h-[90vh] border border-slate-100 dark:border-slate-800">
       <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-900/50 hover:bg-slate-900 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition">
@@ -201,25 +206,31 @@
 
       <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
         <div>
-          <span id="modalCategory" class="text-[11px] font-bold tracking-wider uppercase text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 dark:text-indigo-400 px-3 py-1 rounded-full"></span>
+          <span id="modalCategory" class="text-[11px] font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 px-3 py-1 rounded-full"></span>
           <h3 id="modalTitle" class="text-2xl font-black mt-3 leading-snug"></h3>
-          <p id="modalPrice" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2"></p>
+          <p id="modalPrice" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-2"></p>
           <p id="modalDesc" class="text-sm text-slate-500 dark:text-slate-400 mt-4 leading-relaxed"></p>
 
-          <!-- Seller Info Box -->
-          <div class="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl flex items-center gap-3 border border-slate-100 dark:border-slate-800">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
-              <i class="fa-solid fa-store"></i>
+          <!-- Seller & Contact Info Box -->
+          <div class="mt-6 p-4 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/40 space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-base shadow-md">
+                <i class="fa-solid fa-store"></i>
+              </div>
+              <div>
+                <p id="modalSeller" class="text-sm font-bold text-slate-800 dark:text-slate-200">ชื่อผู้ขาย</p>
+                <p class="text-[11px] text-slate-400">ร้านค้าลงทะเบียนบน UniMarket</p>
+              </div>
             </div>
-            <div>
-              <p id="modalSeller" class="text-sm font-bold">ผู้ขาย</p>
-              <p class="text-xs text-slate-400">ผู้ขายที่ลงทะเบียนแล้วบน UniMarket</p>
+            <div class="pt-2 border-t border-emerald-200/40 dark:border-emerald-800/40 flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+              <i class="fa-solid fa-phone"></i>
+              <span>ติดต่อ: <strong id="modalContact" class="font-bold">--</strong></span>
             </div>
           </div>
         </div>
 
         <div class="mt-8 flex gap-3">
-          <button onclick="addToCartFromModal()" class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 active:scale-95">
+          <button onclick="addToCartFromModal()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 active:scale-95">
             <i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า
           </button>
         </div>
@@ -231,7 +242,7 @@
   <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200 dark:border-slate-800">
     <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
       <h3 class="font-black text-lg flex items-center gap-2">
-        <i class="fa-solid fa-bag-shopping text-indigo-600"></i> ตะกร้าของคุณ
+        <i class="fa-solid fa-bag-shopping text-emerald-600"></i> ตะกร้าของคุณ
       </h3>
       <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
         <i class="fa-solid fa-xmark text-lg"></i>
@@ -243,25 +254,23 @@
     <div class="p-5 border-t border-slate-100 dark:border-slate-800 space-y-4 bg-slate-50/50 dark:bg-slate-900/50">
       <div class="flex justify-between items-center font-bold">
         <span class="text-sm text-slate-500">ยอดรวมทั้งหมด:</span>
-        <span id="cartTotal" class="text-xl font-black text-indigo-600 dark:text-indigo-400">฿0</span>
+        <span id="cartTotal" class="text-xl font-black text-emerald-600 dark:text-emerald-400">฿0</span>
       </div>
-      <button onclick="handleCheckout()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-indigo-500/25">
+      <button onclick="handleCheckout()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-emerald-600/20">
         ชำระเงินทันที
       </button>
     </div>
   </div>
 
-  <!-- JavaScript Logic & State Management -->
+  <!-- JavaScript Logic -->
   <script>
-    // สินค้าเริ่มต้น
     const initialProducts = [
-      { id: 1, title: 'หนังสือ Calculus 1 Edition ล่าสุด', price: 250, category: 'หนังสือ', seller: 'ร้านหนังสือเรียน', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', desc: 'เนื้อหาครบถ้วน พิมพ์สี่สีทั้งเล่ม พร้อมส่งฟรี' },
-      { id: 2, title: 'iPad Air 5 64GB WiFi', price: 19900, category: 'ไอที', seller: 'iStore Official', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', desc: 'สินค้าคุณภาพดี สเปคแรง ตอบโจทย์การเรียน การทำงาน' },
-      { id: 3, title: 'เสื้อช็อปมหาลัย ไซส์ L', price: 450, category: 'แฟชั่น', seller: 'Campus Uniform', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', desc: 'เนื้อผ้าดี ทรงสวย สวมใส่สบาย ระบายอากาศได้ดี' },
-      { id: 4, title: 'พัดลมมินิมอล Hatari', price: 590, category: 'ของใช้ทั่วไป', seller: 'Home Supply', image: 'https://images.unsplash.com/photo-1618941723628-e2740a34b2fe?w=400', desc: 'ดีไซน์สวยเข้ากับห้อง ลมแรง 3 ระดับ สินค้าใหม่' }
+      { id: 1, title: 'หนังสือ Calculus 1 Edition ล่าสุด', price: 250, category: 'หนังสือ', seller: 'ร้านหนังสือเรียน', contact: '081-234-5678 / Line: @bookcenter', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', desc: 'เนื้อหาครบถ้วน พิมพ์สี่สีทั้งเล่ม พร้อมส่งฟรี' },
+      { id: 2, title: 'iPad Air 5 64GB WiFi', price: 19900, category: 'ไอที', seller: 'iStore Official', contact: 'Line: @istore_th', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', desc: 'สินค้าคุณภาพดี สเปคแรง ตอบโจทย์การเรียน การทำงาน' },
+      { id: 3, title: 'เสื้อช็อปมหาลัย ไซส์ L', price: 450, category: 'แฟชั่น', seller: 'Campus Uniform', contact: 'FB: Campus Uniform', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', desc: 'เนื้อผ้าดี ทรงสวย สวมใส่สบาย ระบายอากาศได้ดี' },
+      { id: 4, title: 'พัดลมมินิมอล Hatari', price: 590, category: 'ของใช้ทั่วไป', seller: 'Home Supply', contact: '089-876-5432', image: 'https://images.unsplash.com/photo-1618941723628-e2740a34b2fe?w=400', desc: 'ดีไซน์สวยเข้ากับห้อง ลมแรง 3 ระดับ สินค้าใหม่' }
     ];
 
-    // โหลดสินค้าจาก LocalStorage (ถ้ามีคนเคยลงขายไว้ จะคงอยู่ตลอด)
     let products = JSON.parse(localStorage.getItem('unimarket_products')) || initialProducts;
     let cart = [];
     let currentCategory = 'ทั้งหมด';
@@ -281,7 +290,7 @@
     function renderCategories() {
       const container = document.getElementById('categoryContainer');
       container.innerHTML = categories.map(cat => `
-        <button onclick="setCategory('${cat}')" class="px-5 py-2 rounded-2xl text-xs font-bold tracking-wide whitespace-nowrap transition-all ${currentCategory === cat ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/60 dark:border-slate-800'}">
+        <button onclick="setCategory('${cat}')" class="px-5 py-2 rounded-2xl text-xs font-bold tracking-wide whitespace-nowrap transition-all ${currentCategory === cat ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/60 dark:border-slate-800'}">
           ${cat}
         </button>
       `).join('');
@@ -312,10 +321,10 @@
           </div>
           <div class="p-4">
             <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1 mb-1"><i class="fa-solid fa-store"></i> ${p.seller || 'ร้านค้า'}</span>
-            <h4 class="font-bold text-sm line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">${p.title}</h4>
+            <h4 class="font-bold text-sm line-clamp-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">${p.title}</h4>
             <div class="flex items-center justify-between mt-2">
-              <p class="text-indigo-600 dark:text-indigo-400 font-black text-lg">฿${p.price.toLocaleString()}</p>
-              <span class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs group-hover:bg-indigo-600 group-hover:text-white transition">
+              <p class="text-emerald-600 dark:text-emerald-400 font-black text-lg">฿${p.price.toLocaleString()}</p>
+              <span class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs group-hover:bg-emerald-600 group-hover:text-white transition">
                 <i class="fa-solid fa-arrow-right"></i>
               </span>
             </div>
@@ -336,7 +345,7 @@
           </div>
           <div class="p-4">
             <h4 class="font-bold text-sm line-clamp-1">${p.title}</h4>
-            <p class="text-indigo-600 dark:text-indigo-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
+            <p class="text-emerald-600 dark:text-emerald-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
           </div>
         </div>
       `).join('');
@@ -349,6 +358,7 @@
       document.getElementById('modalPrice').innerText = `฿${activeModalProduct.price.toLocaleString()}`;
       document.getElementById('modalCategory').innerText = activeModalProduct.category;
       document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
+      document.getElementById('modalContact').innerText = activeModalProduct.contact || 'ไม่ได้ระบุ';
       document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
       document.getElementById('productModal').classList.remove('hidden');
     }
@@ -377,7 +387,7 @@
             <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
             <div>
               <p class="text-xs font-bold line-clamp-1">${item.title}</p>
-              <p class="text-xs text-indigo-600 dark:text-indigo-400 font-black">฿${item.price.toLocaleString()}</p>
+              <p class="text-xs text-emerald-600 dark:text-emerald-400 font-black">฿${item.price.toLocaleString()}</p>
             </div>
           </div>
           <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-rose-500 p-2">
@@ -407,7 +417,6 @@
       document.getElementById('sellModal').classList.add('hidden');
     }
 
-    // ฟังก์ชันเพิ่มสินค้าใหม่ลงในระบบ
     function handleCreateProduct(e) {
       e.preventDefault();
       const newProduct = {
@@ -416,18 +425,19 @@
         price: Number(document.getElementById('sellPrice').value),
         category: document.getElementById('sellCategory').value,
         seller: document.getElementById('sellSeller').value,
+        contact: document.getElementById('sellContact').value,
         image: document.getElementById('sellImage').value,
         desc: document.getElementById('sellDesc').value
       };
       
       products.unshift(newProduct);
-      saveProductsToStorage(); // บันทึกลงความจำเบราว์เซอร์
+      saveProductsToStorage();
       renderProducts();
       closeSellModal();
       document.getElementById('sellForm').reset();
       
       confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
-      alert('โพสต์สินค้าของคุณเรียบร้อยแล้ว!');
+      alert('โพสต์สินค้าพร้อมช่องทางติดต่อเรียบร้อยแล้ว!');
     }
 
     function handleCheckout() {
