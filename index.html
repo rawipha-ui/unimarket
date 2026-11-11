@@ -95,6 +95,11 @@ to { transform: translateY(0) scale(1); opacity: 1; }
 
           <div id="userProfileArea"></div>
           
+          <button onclick="openOrdersModal()" class="p-2.5 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 hover:bg-slate-200 dark:hover:bg-slate-900/80 transition relative" title="ติดตามคำสั่งซื้อ">
+            <i class="fa-solid fa-truck-fast text-lg"></i>
+            <span id="ordersBadge" class="hidden absolute -top-1 -right-1 bg-cyan-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-50 dark:border-[#090d16]">0</span>
+          </button>
+
           <button onclick="toggleWishlistOnly()" id="wishlistFilterBtn" class="p-2.5 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-slate-200 dark:hover:bg-slate-900/80 transition relative" title="รายการที่ถูกใจ">
             <i class="fa-solid fa-heart text-lg"></i>
             <span id="wishlistBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-50 dark:border-[#090d16]">0</span>
@@ -267,7 +272,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
       <div class="md:w-1/2 bg-slate-100 dark:bg-slate-950 flex flex-col items-center justify-center p-6 relative">
         <img id="modalImg" src="" class="max-h-64 md:max-h-80 object-contain rounded-2xl w-full">
         <span id="modalSoldBadge" class="hidden absolute top-4 left-4 bg-rose-600 text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg">SOLD OUT</span>
-        <!-- แถบ รูปภาพตัวอย่าง (Thumbnails) ย่อย -->
         <div id="modalThumbnails" class="flex gap-2 mt-4 overflow-x-auto max-w-full pb-1 hide-scrollbar"></div>
       </div>
       <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
@@ -340,6 +344,55 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     </div>  
   </div>
 
+  <!-- Modal สำหรับสแกน QR Code PromptPay ชำระเงิน -->
+  <div id="paymentModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800 text-center">
+      <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center font-bold text-xl mx-auto mb-2 shadow-lg shadow-emerald-500/30">
+        <i class="fa-solid fa-qrcode"></i>
+      </div>
+      <h3 class="text-xl font-black text-slate-800 dark:text-white">ชำระเงินผ่าน PromptPay</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">สแกน QR Code ด้านล่างเพื่อโอนเงินชำระสินค้า</p>
+
+      <div class="my-4 p-4 bg-white rounded-2xl border border-slate-200 shadow-inner flex flex-col items-center justify-center">
+        <!-- ภาพ QR Code PromptPay แบบไดนามิก -->
+        <img id="paymentQrImg" src="" class="w-48 h-48 object-contain">
+        <p class="text-xs text-slate-500 mt-2 font-medium">PromptPay ID: <span class="font-bold text-slate-800">0812345678</span></p>
+        <p id="paymentAmountText" class="text-xl font-black text-emerald-600 mt-1">฿0</p>
+      </div>
+
+      <div class="space-y-3">
+        <button onclick="confirmPaymentSuccess()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold rounded-xl transition shadow-lg shadow-emerald-500/20 active:scale-95">
+          <i class="fa-solid fa-circle-check"></i> ยืนยันการโอนเงินเรียบร้อย
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal สำหรับติดตามสถานะคำสั่งซื้อ & พัสดุ (Order Tracking) -->
+  <div id="ordersModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800 max-h-[85vh] flex flex-col">
+      <button onclick="closeOrdersModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      
+      <div class="flex items-center gap-3 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-slate-800 dark:text-white">ติดตามสถานะพัสดุ / คำสั่งซื้อ</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">รายการสั่งซื้อล่าสุดและเลขพัสดุของคุณ</p>
+        </div>
+      </div>
+
+      <div id="ordersListContainer" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+    </div>
+  </div>
+
   <!-- Cart Drawer -->
   <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200 dark:border-slate-800">
     <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
@@ -356,8 +409,8 @@ to { transform: translateY(0) scale(1); opacity: 1; }
         <span class="text-sm text-slate-500 dark:text-slate-400">ยอดรวมทั้งหมด:</span>
         <span id="cartTotal" class="text-xl font-black text-emerald-600 dark:text-emerald-400">฿0</span>
       </div>
-      <button onclick="handleCheckout()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-emerald-500/20">
-        ชำระเงินทันที
+      <button onclick="openPaymentModal()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-emerald-500/20">
+        ชำระเงินด้วย PromptPay
       </button>
     </div>  
   </div>
@@ -368,6 +421,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   let currentUser = JSON.parse(localStorage.getItem('unimarket_user')) || null;
   let products = JSON.parse(localStorage.getItem('unimarket_products')) || initialProducts;
   let wishlist = JSON.parse(localStorage.getItem('unimarket_wishlist')) || [];
+  let orders = JSON.parse(localStorage.getItem('unimarket_orders')) || [];
   let cart = [];
   let currentCategory = 'ทั้งหมด';
   let showWishlistOnly = false;
@@ -383,6 +437,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     updatePriceSliderLabel();
     renderProducts();
     updateWishlistBadge();
+    updateOrdersBadge();
   });
 
   function showToast(message, type = 'success') {
@@ -468,6 +523,17 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   function saveWishlistToStorage() {
     localStorage.setItem('unimarket_wishlist', JSON.stringify(wishlist));
     updateWishlistBadge();
+  }
+
+  function saveOrdersToStorage() {
+    localStorage.setItem('unimarket_orders', JSON.stringify(orders));
+    updateOrdersBadge();
+  }
+
+  function updateOrdersBadge() {
+    const badge = document.getElementById('ordersBadge');
+    badge.innerText = orders.length;
+    badge.classList.toggle('hidden', orders.length === 0);
   }
 
   function renderUserProfile() {
@@ -658,7 +724,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
     document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
 
-    // แสดง Thumbnails สำหรับเปลี่ยนรูปภาพ
     const thumbContainer = document.getElementById('modalThumbnails');
     if (imgList.length > 1) {
       thumbContainer.innerHTML = imgList.map((imgUrl, idx) => `
@@ -982,6 +1047,115 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     document.getElementById('imagePreviewContainer').innerHTML = '';
   }
 
+  // --- ฟังก์ชันสร้าง QR Code PromptPay และ ชำระเงิน ---
+  function openPaymentModal() {
+    if (cart.length === 0) {
+      showToast('ไม่มีสินค้าในตะกร้า', 'error');
+      return;
+    }
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('paymentAmountText').innerText = `฿${total.toLocaleString()}`;
+    
+    // เจนภาพ QR Code PromptPay อัตโนมัติด้วย PromptPay QR Generator API
+    const promptpayId = '0812345678';
+    document.getElementById('paymentQrImg').src = `https://promptpay.io/${promptpayId}/${total}.png`;
+
+    toggleCartDrawer();
+    document.getElementById('paymentModal').classList.remove('hidden');
+  }
+
+  function closePaymentModal() {
+    document.getElementById('paymentModal').classList.add('hidden');
+  }
+
+  function confirmPaymentSuccess() {
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    const trackingNo = 'TH' + Math.floor(100000000 + Math.random() * 900000000);
+    
+    // สร้างออเดอร์ใหม่เพื่อนำไปใส่ใน Order Tracking
+    const newOrder = {
+      id: 'ORD-' + Date.now().toString().slice(-6),
+      date: new Date().toLocaleDateString('th-TH'),
+      items: [...cart],
+      total: total,
+      status: 'กำลังจัดส่ง',
+      trackingNo: trackingNo,
+      carrier: 'KERRY EXPRESS'
+    };
+
+    orders.unshift(newOrder);
+    saveOrdersToStorage();
+
+    cart = [];
+    updateCartUI();
+    closePaymentModal();
+    showToast('ชำระเงินเรียบร้อย! สร้างคำสั่งซื้อสำเร็จ', 'success');
+
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+    }
+  }
+
+  // --- ฟังก์ชันระบบติดตามสถานะคำสั่งซื้อ & พัสดุ ---
+  function openOrdersModal() {
+    renderOrdersList();
+    document.getElementById('ordersModal').classList.remove('hidden');
+  }
+
+  function closeOrdersModal() {
+    document.getElementById('ordersModal').classList.add('hidden');
+  }
+
+  function renderOrdersList() {
+    const container = document.getElementById('ordersListContainer');
+    if (orders.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-12 text-slate-400 dark:text-slate-500">
+          <i class="fa-solid fa-box-open text-3xl mb-2 block"></i>
+          <p class="text-xs font-semibold">คุณยังไม่มีคำสั่งซื้อ</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = orders.map(ord => `
+      <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-slate-200 dark:border-slate-800/80 pb-2">
+          <span class="font-bold text-slate-800 dark:text-slate-200">เลขคำสั่งซื้อ: ${ord.id}</span>
+          <span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40">
+            ${ord.status}
+          </span>
+        </div>
+        
+        <div class="space-y-2">
+          ${ord.items.map(item => `
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-600 dark:text-slate-300 font-medium line-clamp-1">${item.title}</span>
+              <span class="font-bold text-slate-800 dark:text-slate-100">฿${item.price.toLocaleString()}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs">
+          <div>
+            <p class="text-[10px] text-slate-400">ขนส่ง: ${ord.carrier}</p>
+            <p class="font-bold text-fuchsia-600 dark:text-fuchsia-400 text-xs">เลขพัสดุ: ${ord.trackingNo}</p>
+          </div>
+          <button onclick="copyTrackingNo('${ord.trackingNo}')" class="px-3 py-1 bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300 rounded-xl text-[10px] font-bold hover:bg-violet-200 transition">
+            คัดลอกเลข
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function copyTrackingNo(trackingNo) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(trackingNo);
+      showToast(`คัดลอกเลขพัสดุ ${trackingNo} เรียบร้อย!`, 'info');
+    }
+  }
+
   function resetFilters() {
     currentCategory = 'ทั้งหมด';
     showWishlistOnly = false;
@@ -995,22 +1169,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     renderCategories();
     renderProducts();
     showToast('รีเซ็ตการค้นหาแล้ว', 'info');
-  }
-
-  function handleCheckout() {
-    if (cart.length === 0) {
-      showToast('ไม่มีสินค้าในตะกร้า', 'error');
-      return;
-    }
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    showToast(`สั่งซื้อสำเร็จ! ยอดรวมทั้งสิ้น ฿${total.toLocaleString()}`, 'success');
-    cart = [];
-    updateCartUI();
-    toggleCartDrawer();
-
-    if (typeof confetti === 'function') {
-      confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
-    }
   }
   </script>
 </body>
