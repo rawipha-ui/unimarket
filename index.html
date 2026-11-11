@@ -242,9 +242,10 @@ to { transform: translateY(0) scale(1); opacity: 1; }
           <input type="password" maxlength="4" required id="sellPin" placeholder="1234 (ใช้สำหรับแก้ไข/ลบภายหลัง)" class="w-full px-4 py-2.5 border border-rose-200 dark:border-rose-900/50 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 text-sm focus:border-rose-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">รูปภาพสินค้า (อัปโหลดจากเครื่อง หรือ วางลิงก์) *</label>
-          <input type="file" id="sellFileInput" accept="image/*" onchange="handleImageFileSelect(event)" class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-100 dark:file:bg-violet-950 file:text-violet-700 dark:file:text-violet-300 hover:file:bg-violet-200 dark:hover:file:bg-violet-900 cursor-pointer mb-2">
-          <input type="url" id="sellImage" placeholder="หรือวางลิงก์รูปภาพ https://..." class="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-xs focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">รูปภาพสินค้า (เลือกได้หลายรูป) *</label>
+          <input type="file" id="sellFileInput" accept="image/*" multiple onchange="handleMultipleImagesSelect(event)" class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-100 dark:file:bg-violet-950 file:text-violet-700 dark:file:text-violet-300 hover:file:bg-violet-200 dark:hover:file:bg-violet-900 cursor-pointer mb-2">
+          <input type="url" id="sellImage" placeholder="หรือวางลิงก์รูปภาพหลัก https://..." class="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-xs focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
+          <div id="imagePreviewContainer" class="flex gap-2 mt-2 overflow-x-auto hide-scrollbar"></div>
         </div>
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">รายละเอียดสินค้า</label>
@@ -263,16 +264,17 @@ to { transform: translateY(0) scale(1); opacity: 1; }
       <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-200/80 dark:bg-slate-950/70 hover:bg-slate-300 dark:hover:bg-slate-950 text-slate-800 dark:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>      
-      <div class="md:w-1/2 bg-slate-100 dark:bg-slate-950 flex items-center justify-center p-6 relative">
-        <img id="modalImg" src="" class="max-h-64 md:max-h-full object-contain rounded-2xl">
+      <div class="md:w-1/2 bg-slate-100 dark:bg-slate-950 flex flex-col items-center justify-center p-6 relative">
+        <img id="modalImg" src="" class="max-h-64 md:max-h-80 object-contain rounded-2xl w-full">
         <span id="modalSoldBadge" class="hidden absolute top-4 left-4 bg-rose-600 text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg">SOLD OUT</span>
+        <!-- แถบ รูปภาพตัวอย่าง (Thumbnails) ย่อย -->
+        <div id="modalThumbnails" class="flex gap-2 mt-4 overflow-x-auto max-w-full pb-1 hide-scrollbar"></div>
       </div>
       <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <span id="modalCategory" class="text-[11px] font-bold tracking-wider uppercase text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-100 dark:bg-fuchsia-950/60 px-3 py-1 rounded-full border border-fuchsia-200 dark:border-fuchsia-900/40"></span>
             
-            <!-- ปุ่มแชร์ไปยังโซเชียลมีเดียต่างๆ -->
             <div class="flex items-center gap-2">
               <button onclick="shareToSocial('facebook')" class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs hover:opacity-80 transition" title="แชร์ลง Facebook"><i class="fa-brands fa-facebook-f"></i></button>
               <button onclick="shareToSocial('line')" class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs hover:opacity-80 transition" title="แชร์ลง Line"><i class="fa-brands fa-line"></i></button>
@@ -323,7 +325,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
             </form>
           </div>
 
-          <!-- สินค้าแนะนำที่เกี่ยวข้อง -->
           <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">สินค้าหมวดเดียวกันที่คุณอาจสนใจ</h4>
             <div id="relatedProductsList" class="grid grid-cols-3 gap-2"></div>
@@ -371,7 +372,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   let currentCategory = 'ทั้งหมด';
   let showWishlistOnly = false;
   let activeModalProduct = null;
-  let uploadedImageBase64 = '';
+  let uploadedImagesBase64 = [];
 
   const categories = ['ทั้งหมด', 'ไอที', 'แฟชั่น', 'หนังสือ', 'ของใช้ทั่วไป'];
 
@@ -593,6 +594,8 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     grid.innerHTML = filtered.map(p => {
       const isLiked = wishlist.includes(p.id);
       const isSold = p.isSold || false;
+      const displayImage = (p.images && p.images.length > 0) ? p.images[0] : p.image;
+
       return `
         <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 neon-border-glow shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer flex flex-col justify-between group relative ${isSold ? 'opacity-75' : ''}">
           <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center transition ${isLiked ? 'text-rose-500' : 'text-slate-400 hover:text-rose-500'}">
@@ -600,7 +603,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
           </button>
 
           <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
-            <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ${isSold ? 'grayscale' : ''}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'">
+            <img src="${displayImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ${isSold ? 'grayscale' : ''}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'">
             <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-white/90 dark:bg-slate-950/80 backdrop-blur-md text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-200 dark:border-fuchsia-900/40 px-3 py-1 rounded-full">${p.category}</span>
             ${isSold ? `<span class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center text-white font-black text-sm tracking-wider uppercase">SOLD OUT</span>` : ''}
           </div>
@@ -628,27 +631,42 @@ to { transform: translateY(0) scale(1); opacity: 1; }
       grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-400 dark:text-slate-500">ไม่พบสินค้าที่ตรงกับการค้นหา</div>`;
       return;
     }
-    grid.innerHTML = filtered.map(p => `
-      <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer flex flex-col justify-between group">
-        <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
-          <img src="${p.image}" class="w-full h-full object-cover">
+    grid.innerHTML = filtered.map(p => {
+      const displayImage = (p.images && p.images.length > 0) ? p.images[0] : p.image;
+      return `
+        <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer flex flex-col justify-between group">
+          <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
+            <img src="${displayImage}" class="w-full h-full object-cover">
+          </div>
+          <div class="p-4">
+            <h4 class="font-bold text-sm line-clamp-1 text-slate-800 dark:text-slate-100">${p.title}</h4>
+            <p class="text-fuchsia-600 dark:text-fuchsia-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
+          </div>
         </div>
-        <div class="p-4">
-          <h4 class="font-bold text-sm line-clamp-1 text-slate-800 dark:text-slate-100">${p.title}</h4>
-          <p class="text-fuchsia-600 dark:text-fuchsia-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function openProductModal(id) {
     activeModalProduct = products.find(p => p.id === id);
-    document.getElementById('modalImg').src = activeModalProduct.image;
+    const imgList = (activeModalProduct.images && activeModalProduct.images.length > 0) ? activeModalProduct.images : [activeModalProduct.image];
+
+    document.getElementById('modalImg').src = imgList[0];
     document.getElementById('modalTitle').innerText = activeModalProduct.title;
     document.getElementById('modalPrice').innerText = `฿${activeModalProduct.price.toLocaleString()}`;
     document.getElementById('modalCategory').innerText = activeModalProduct.category;
     document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
     document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
+
+    // แสดง Thumbnails สำหรับเปลี่ยนรูปภาพ
+    const thumbContainer = document.getElementById('modalThumbnails');
+    if (imgList.length > 1) {
+      thumbContainer.innerHTML = imgList.map((imgUrl, idx) => `
+        <img src="${imgUrl}" onclick="switchModalImage('${imgUrl}')" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 border-slate-200 dark:border-slate-700 hover:border-fuchsia-500 transition">
+      `).join('');
+    } else {
+      thumbContainer.innerHTML = '';
+    }
 
     const soldBadge = document.getElementById('modalSoldBadge');
     const addToCartBtn = document.getElementById('addToCartBtn');
@@ -687,6 +705,10 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     document.getElementById('productModal').classList.remove('hidden');
   }
 
+  function switchModalImage(imgUrl) {
+    document.getElementById('modalImg').src = imgUrl;
+  }
+
   function renderRelatedProducts() {
     const container = document.getElementById('relatedProductsList');
     const related = products.filter(p => p.category === activeModalProduct.category && p.id !== activeModalProduct.id).slice(0, 3);
@@ -694,13 +716,16 @@ to { transform: translateY(0) scale(1); opacity: 1; }
       container.innerHTML = `<p class="col-span-3 text-[10px] text-slate-400 italic">ไม่มีสินค้าอื่นในหมวดนี้</p>`;
       return;
     }
-    container.innerHTML = related.map(r => `
-      <div onclick="openProductModal(${r.id})" class="bg-slate-100 dark:bg-slate-950 p-2 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-fuchsia-500 transition">
-        <img src="${r.image}" class="w-full h-14 object-cover rounded-lg mb-1">
-        <p class="text-[10px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${r.title}</p>
-        <p class="text-[10px] text-fuchsia-600 dark:text-fuchsia-400 font-black">฿${r.price.toLocaleString()}</p>
-      </div>
-    `).join('');
+    container.innerHTML = related.map(r => {
+      const img = (r.images && r.images.length > 0) ? r.images[0] : r.image;
+      return `
+        <div onclick="openProductModal(${r.id})" class="bg-slate-100 dark:bg-slate-950 p-2 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-fuchsia-500 transition">
+          <img src="${img}" class="w-full h-14 object-cover rounded-lg mb-1">
+          <p class="text-[10px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${r.title}</p>
+          <p class="text-[10px] text-fuchsia-600 dark:text-fuchsia-400 font-black">฿${r.price.toLocaleString()}</p>
+        </div>
+      `;
+    }).join('');
   }
 
   function renderComments() {
@@ -808,15 +833,23 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     }
   }
 
-  function handleImageFileSelect(e) {
-    const file = e.target.files[0];
-    if (file) {
+  function handleMultipleImagesSelect(e) {
+    const files = Array.from(e.target.files);
+    uploadedImagesBase64 = [];
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    previewContainer.innerHTML = '';
+
+    files.forEach(file => {
       const reader = new FileReader();
       reader.onload = function(event) {
-        uploadedImageBase64 = event.target.result;
+        const base64Str = event.target.result;
+        uploadedImagesBase64.push(base64Str);
+        previewContainer.innerHTML += `
+          <img src="${base64Str}" class="w-12 h-12 rounded-lg object-cover border border-slate-300 dark:border-slate-700">
+        `;
       };
       reader.readAsDataURL(file);
-    }
+    });
   }
 
   function addToCartFromModal() {
@@ -834,20 +867,23 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     badge.classList.toggle('hidden', cart.length === 0);
 
     const itemsContainer = document.getElementById('cartItems');
-    itemsContainer.innerHTML = cart.map((item, index) => `
-      <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div class="flex items-center gap-3">
-          <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
-          <div>
-            <p class="text-xs font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${item.title}</p>
-            <p class="text-xs text-fuchsia-600 dark:text-fuchsia-400 font-black">฿${item.price.toLocaleString()}</p>
+    itemsContainer.innerHTML = cart.map((item, index) => {
+      const img = (item.images && item.images.length > 0) ? item.images[0] : item.image;
+      return `
+        <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <div class="flex items-center gap-3">
+            <img src="${img}" class="w-12 h-12 rounded-xl object-cover">
+            <div>
+              <p class="text-xs font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${item.title}</p>
+              <p class="text-xs text-fuchsia-600 dark:text-fuchsia-400 font-black">฿${item.price.toLocaleString()}</p>
+            </div>
           </div>
+          <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-rose-500 p-2">
+            <i class="fa-solid fa-trash-can text-sm"></i>
+          </button>
         </div>
-        <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-rose-500 p-2">
-          <i class="fa-solid fa-trash-can text-sm"></i>
-        </button>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     const total = cart.reduce((sum, item) => sum + item.price, 0);
     document.getElementById('cartTotal').innerText = `฿${total.toLocaleString()}`;
@@ -871,6 +907,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     }
     document.getElementById('editProductId').value = '';
     document.getElementById('sellForm').reset();
+    document.getElementById('imagePreviewContainer').innerHTML = '';
     document.getElementById('sellModalTitle').innerText = '⚡ ลงขายสินค้าใหม่';
     document.getElementById('sellSubmitBtn').innerText = '🚀 โพสต์ลงขายสินค้า';
     document.getElementById('sellSeller').value = currentUser.username;
@@ -880,13 +917,23 @@ to { transform: translateY(0) scale(1); opacity: 1; }
 
   function closeSellModal() {
     document.getElementById('sellModal').classList.add('hidden');
-    uploadedImageBase64 = '';
+    uploadedImagesBase64 = [];
+    document.getElementById('imagePreviewContainer').innerHTML = '';
   }
 
   function handleCreateOrUpdateProduct(e) {
     e.preventDefault();
     const editId = document.getElementById('editProductId').value;
-    const imageUrl = uploadedImageBase64 || document.getElementById('sellImage').value || 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400';
+    const inputUrl = document.getElementById('sellImage').value;
+
+    let imageList = [];
+    if (uploadedImagesBase64.length > 0) {
+      imageList = uploadedImagesBase64;
+    } else if (inputUrl) {
+      imageList = [inputUrl];
+    } else {
+      imageList = ['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'];
+    }
 
     if (editId) {
       const index = products.findIndex(p => p.id === Number(editId));
@@ -899,7 +946,8 @@ to { transform: translateY(0) scale(1); opacity: 1; }
           seller: document.getElementById('sellSeller').value,
           contact: document.getElementById('sellContact').value,
           pin: document.getElementById('sellPin').value,
-          image: imageUrl || products[index].image,
+          image: imageList[0],
+          images: imageList,
           desc: document.getElementById('sellDesc').value
         };
         showToast('แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!', 'success');
@@ -913,7 +961,8 @@ to { transform: translateY(0) scale(1); opacity: 1; }
         seller: document.getElementById('sellSeller').value,
         contact: document.getElementById('sellContact').value,
         pin: document.getElementById('sellPin').value,
-        image: imageUrl,
+        image: imageList[0],
+        images: imageList,
         desc: document.getElementById('sellDesc').value,
         comments: [],
         isSold: false
@@ -929,7 +978,8 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     renderProducts();
     closeSellModal();
     document.getElementById('sellForm').reset();
-    uploadedImageBase64 = '';
+    uploadedImagesBase64 = [];
+    document.getElementById('imagePreviewContainer').innerHTML = '';
   }
 
   function resetFilters() {
