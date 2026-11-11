@@ -45,9 +45,31 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 }
+/* สไตล์สำหรับ Toast Container */
+#toastContainer {
+position: fixed;
+bottom: 1.5rem;
+right: 1.5rem;
+z-index: 100;
+display: flex;
+flex-direction: column;
+gap: 0.75rem;
+pointer-events: none;
+}
+.toast-item {
+pointer-events: auto;
+animation: toastIn 0.3s ease-out forwards;
+}
+@keyframes toastIn {
+from { transform: translateY(100%) scale(0.9); opacity: 0; }
+to { transform: translateY(0) scale(1); opacity: 1; }
+}
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-[#090d16] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 selection:bg-fuchsia-500 selection:text-white">
+
+  <!-- Toast Container สำหรับแจ้งเตือนแบบสร้างสรรค์ -->
+  <div id="toastContainer"></div>
 
   <header class="sticky top-0 z-40 glassmorphism border-b border-slate-200 dark:border-slate-800/80 transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +90,6 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
         </div>
         
         <div class="flex items-center gap-2 sm:gap-3">
-          <!-- ปุ่มสลับโหมด Theme -->
           <button onclick="toggleTheme()" class="p-2.5 rounded-2xl text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-900/80 transition" title="สลับโหมดสว่าง/มืด">
             <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
           </button>
@@ -118,12 +139,18 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar" id="categoryContainer"></div>
-      <div class="flex items-center gap-3 self-end md:self-auto">
-        <div class="flex items-center gap-1.5 bg-white dark:bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
-          <span class="text-slate-500 dark:text-slate-400">งบไม่เกิน:</span>
-          <input type="number" id="maxPriceInput" oninput="renderProducts()" placeholder="สูงสุด ฿" class="w-20 bg-transparent outline-none font-bold text-fuchsia-600 dark:text-fuchsia-400">
+      
+      <!-- ส่วนของสไลเดอร์กรองราคา และ ตัวจัดเรียง -->
+      <div class="flex flex-wrap items-center gap-3 self-end md:self-auto">
+        <div class="flex items-center gap-3 bg-white dark:bg-slate-900/90 px-4 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
+          <span class="text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-sliders text-fuchsia-500"></i> งบไม่เกิน:
+          </span>
+          <input type="range" id="priceSlider" min="0" max="50000" step="500" value="50000" oninput="updatePriceSliderLabel(); renderProducts();" class="w-24 sm:w-32 accent-fuchsia-500 cursor-pointer">
+          <span id="priceSliderValue" class="font-bold text-fuchsia-600 dark:text-fuchsia-400 min-w-[60px]">ไม่จำกัด</span>
         </div>
-        <select id="sortSelect" onchange="renderProducts()" class="bg-white dark:bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-semibold outline-none text-slate-700 dark:text-slate-300">
+        
+        <select id="sortSelect" onchange="renderProducts()" class="bg-white dark:bg-slate-900/90 px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-semibold outline-none text-slate-700 dark:text-slate-300 cursor-pointer">
           <option value="newest">มาใหม่ล่าสุด</option>
           <option value="price-asc">ราคา: ต่ำสุด - สูงสุด</option>
           <option value="price-desc">ราคา: สูงสุด - ต่ำสุด</option>
@@ -142,6 +169,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-5"></div>  
   </main>
 
+  <!-- Login Modal -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
       <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -170,6 +198,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     </div>  
   </div>
 
+  <!-- Sell Modal -->
   <div id="sellModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
       <button onclick="closeSellModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center justify-center transition">
@@ -229,6 +258,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     </div>  
   </div>
 
+  <!-- Product Detail Modal -->
   <div id="productModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col md:flex-row max-h-[90vh] border border-slate-200 dark:border-slate-800">
       <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-200/80 dark:bg-slate-950/70 hover:bg-slate-300 dark:hover:bg-slate-950 text-slate-800 dark:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition">
@@ -287,6 +317,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     </div>  
   </div>
 
+  <!-- Cart Drawer -->
   <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200 dark:border-slate-800">
     <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
       <h3 class="font-black text-lg flex items-center gap-2 text-slate-800 dark:text-white">
@@ -326,11 +357,55 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     initTheme();
     renderUserProfile();
     renderCategories();
+    updatePriceSliderLabel();
     renderProducts();
     updateWishlistBadge();
   });
 
-  // ฟังก์ชันจัดการ Theme (Dark / Light Mode)
+  // --- ฟังก์ชันสำหรับระบบ Toast Notifications ---
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    
+    let iconClass = 'fa-circle-check text-emerald-400';
+    let borderColor = 'border-emerald-500/30';
+
+    if (type === 'error') {
+      iconClass = 'fa-circle-xmark text-rose-400';
+      borderColor = 'border-rose-500/30';
+    } else if (type === 'info') {
+      iconClass = 'fa-circle-info text-cyan-400';
+      borderColor = 'border-cyan-500/30';
+    }
+
+    toast.className = `toast-item flex items-center gap-3 bg-slate-900/90 dark:bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-xl border ${borderColor} backdrop-blur-md max-w-xs text-xs font-semibold`;
+    toast.innerHTML = `
+      <i class="fa-solid ${iconClass} text-base"></i>
+      <span class="flex-1">${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(100%) scale(0.9)';
+      toast.style.transition = 'all 0.3s ease-in';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // --- ฟังก์ชันจัดการ Price Slider ---
+  function updatePriceSliderLabel() {
+    const val = Number(document.getElementById('priceSlider').value);
+    const label = document.getElementById('priceSliderValue');
+    if (val >= 50000) {
+      label.innerText = 'ไม่จำกัด';
+    } else {
+      label.innerText = `฿${val.toLocaleString()}`;
+    }
+  }
+
+  // --- ฟังก์ชันจัดการ Theme (Dark / Light Mode) ---
   function initTheme() {
     const savedTheme = localStorage.getItem('unimarket_theme');
     if (savedTheme === 'light') {
@@ -410,12 +485,14 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     localStorage.setItem('unimarket_user', JSON.stringify(currentUser));
     renderUserProfile();
     closeLoginModal();
+    showToast(`ยินดีต้อนรับคุณ ${currentUser.username} เข้าสู่ระบบ!`, 'success');
   }
 
   function handleLogout() {
     currentUser = null;
     localStorage.removeItem('unimarket_user');
     renderUserProfile();
+    showToast('ออกจากระบบเรียบร้อยแล้ว', 'info');
   }
 
   function updateWishlistBadge() {
@@ -428,8 +505,10 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     event.stopPropagation();
     if (wishlist.includes(id)) {
       wishlist = wishlist.filter(item => item !== id);
+      showToast('ลบออกจากรายการที่ชอบแล้ว', 'info');
     } else {
       wishlist.push(id);
+      showToast('บันทึกในรายการที่ชอบเรียบร้อย', 'success');
     }
     saveWishlistToStorage();
     renderProducts();
@@ -463,7 +542,8 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
 
   function renderProducts() {
     const grid = document.getElementById('productGrid');
-    const maxPrice = Number(document.getElementById('maxPriceInput').value) || Infinity;
+    const sliderVal = Number(document.getElementById('priceSlider').value);
+    const maxPrice = sliderVal >= 50000 ? Infinity : sliderVal;
     const sortValue = document.getElementById('sortSelect').value;
 
     let filtered = products.filter(p => {
@@ -484,8 +564,8 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
           <div class="w-16 h-16 rounded-3xl bg-violet-100 dark:bg-violet-950/50 text-fuchsia-600 dark:text-fuchsia-400 flex items-center justify-center text-2xl mx-auto mb-3">
             <i class="fa-solid fa-store-slash"></i>
           </div>
-          <p class="text-slate-700 dark:text-slate-300 font-bold text-base">ยังไม่มีสินค้าในหมวดนี้</p>
-          <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">กดปุ่ม "ลงขายสินค้า" ด้านบน เพื่อเปิดร้านเป็นคนแรกได้เลย!</p>
+          <p class="text-slate-700 dark:text-slate-300 font-bold text-base">ยังไม่มีสินค้าที่ตรงกับเงื่อนไข</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">ลองปรับช่วงราคาหรือกด "ลงขายสินค้า" เพื่อเปิดร้านเป็นคนแรก!</p>
         </div>
       `;
       return;
@@ -597,6 +677,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     saveProductsToStorage();
     renderComments();
     input.value = '';
+    showToast('โพสต์คอมเมนต์สอบถามเรียบร้อย', 'success');
   }
 
   function closeProductModal() {
@@ -606,7 +687,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
   function shareProduct() {
     if (navigator.clipboard && activeModalProduct) {
       navigator.clipboard.writeText(window.location.href);
-      alert(`คัดลอกลิงก์เรียบร้อย! ส่งแชร์สินค้า "${activeModalProduct.title}" ให้เพื่อนได้เลย`);
+      showToast(`คัดลอกลิงก์สินค้า "${activeModalProduct.title}" เรียบร้อย!`, 'info');
     }
   }
 
@@ -618,9 +699,9 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
       saveProductsToStorage();
       renderProducts();
       closeProductModal();
-      alert('ลบรายการสินค้าเรียบร้อยแล้ว');
+      showToast('ลบรายการสินค้าเรียบร้อยแล้ว', 'info');
     } else if (userPin !== null) {
-      alert('รหัสผ่านไม่ถูกต้อง ไม่สามารถลบได้');
+      showToast('รหัสผ่านไม่ถูกต้อง ไม่สามารถลบสินค้าได้', 'error');
     }
   }
 
@@ -641,6 +722,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     updateCartUI();
     closeProductModal();
     toggleCartDrawer();
+    showToast(`เพิ่ม "${activeModalProduct.title}" ลงในตะกร้าแล้ว`, 'success');
   }
 
   function updateCartUI() {
@@ -669,8 +751,9 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
   }
 
   function removeFromCart(index) {
-    cart.splice(index, 1);
+    const removedItem = cart.splice(index, 1);
     updateCartUI();
+    showToast(`นำสินค้าออกจากตะกร้าแล้ว`, 'info');
   }
 
   function toggleCartDrawer() {
@@ -679,7 +762,7 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
 
   function openSellModal() {
     if (!currentUser) {
-      alert('กรุณาเข้าสู่ระบบก่อนลงขายสินค้า');
+      showToast('กรุณาเข้าสู่ระบบก่อนลงขายสินค้า', 'error');
       openLoginModal();
       return;
     }
@@ -715,6 +798,8 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     document.getElementById('sellForm').reset();
     uploadedImageBase64 = '';
 
+    showToast('โพสต์ลงขายสินค้าเรียบร้อยแล้ว!', 'success');
+
     if (typeof confetti === 'function') {
       confetti({
         particleCount: 100,
@@ -729,20 +814,23 @@ background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
     showWishlistOnly = false;
     document.getElementById('searchInput').value = '';
     document.getElementById('searchInputMobile').value = '';
-    document.getElementById('maxPriceInput').value = '';
+    document.getElementById('priceSlider').value = 50000;
+    updatePriceSliderLabel();
     document.getElementById('sortSelect').value = 'newest';
     document.getElementById('wishlistFilterBtn').classList.remove('text-rose-500');
     document.getElementById('sectionTitle').innerText = 'รายการสินค้าทั้งหมด';
     renderCategories();
     renderProducts();
+    showToast('รีเซ็ตการค้นหาแล้ว', 'info');
   }
 
   function handleCheckout() {
     if (cart.length === 0) {
-      alert('ไม่มีสินค้าในตะกร้า');
+      showToast('ไม่มีสินค้าในตะกร้า', 'error');
       return;
     }
-    alert(`สั่งซื้อสำเร็จ! ยอดรวมทั้งสิ้น ฿${cart.reduce((sum, item) => sum + item.price, 0).toLocaleString()} ทางเราได้ส่งคำสั่งซื้อไปยังผู้ขายแล้ว`);
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    showToast(`สั่งซื้อสำเร็จ! ยอดรวมทั้งสิ้น ฿${total.toLocaleString()}`, 'success');
     cart = [];
     updateCartUI();
     toggleCartDrawer();
