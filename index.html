@@ -29,12 +29,15 @@
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .glassmorphism {
-      background: rgba(17, 24, 39, 0.75);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
+    .dark .glassmorphism {
+      background: rgba(17, 24, 39, 0.85);
+    }
     .neon-border-glow:hover {
-      box-shadow: 0 0 25px -5px rgba(236, 72, 153, 0.4), 0 0 10px -5px rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 25px -5px rgba(236, 72, 153, 0.3), 0 0 10px -5px rgba(139, 92, 246, 0.3);
     }
     .gradient-text {
       background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
@@ -43,10 +46,10 @@
     }
   </style>
 </head>
-<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 selection:bg-fuchsia-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-[#090d16] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 selection:bg-fuchsia-500 selection:text-white">
 
   <!-- Header / Navbar -->
-  <header class="sticky top-0 z-40 glassmorphism border-b border-slate-800/80">
+  <header class="sticky top-0 z-40 glassmorphism border-b border-slate-200 dark:border-slate-800/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 gap-3 sm:gap-4">
         
@@ -65,8 +68,8 @@
 
         <!-- Search Box -->
         <div class="flex-1 max-w-lg relative hidden md:block">
-          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ค้นหาสินค้า, ร้านค้า, หมวดหมู่..." class="w-full pl-11 pr-4 py-2.5 bg-slate-900/90 border border-slate-800 focus:border-fuchsia-500 rounded-2xl text-sm focus:outline-none transition-all placeholder:text-slate-500 text-slate-200">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ค้นหาสินค้า, ร้านค้า, หมวดหมู่..." class="w-full pl-11 pr-4 py-2.5 bg-slate-100 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 focus:border-fuchsia-500 rounded-2xl text-sm focus:outline-none transition-all placeholder:text-slate-400 text-slate-800 dark:text-slate-200">
         </div>
 
         <!-- Right Action Buttons -->
@@ -75,10 +78,16 @@
           <!-- ปุ่มเข้าสู่ระบบ -->
           <div id="userProfileArea"></div>
 
+          <!-- Dark / Light Mode Toggle -->
+          <button onclick="toggleDarkMode()" class="p-2.5 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-fuchsia-500 hover:bg-slate-200 dark:hover:bg-slate-900/80 transition" title="สลับโหมดสว่าง/มืด">
+            <i class="fa-solid fa-sun hidden dark:block text-lg text-amber-400"></i>
+            <i class="fa-solid fa-moon block dark:hidden text-lg text-slate-600"></i>
+          </button>
+
           <!-- Wishlist Toggle Filter -->
-          <button onclick="toggleWishlistOnly()" id="wishlistFilterBtn" class="p-2.5 rounded-2xl text-slate-400 hover:text-rose-400 hover:bg-slate-900/80 transition relative" title="รายการที่ถูกใจ">
+          <button onclick="toggleWishlistOnly()" id="wishlistFilterBtn" class="p-2.5 rounded-2xl text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-900/80 transition relative" title="รายการที่ถูกใจ">
             <i class="fa-solid fa-heart text-lg"></i>
-            <span id="wishlistBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#090d16]">0</span>
+            <span id="wishlistBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-[#090d16]">0</span>
           </button>
 
           <!-- Post Item Button -->
@@ -88,9 +97,9 @@
           </button>
 
           <!-- Cart Icon -->
-          <button onclick="toggleCartDrawer()" class="relative p-2.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-900/80 rounded-2xl transition" title="ตะกร้าสินค้า">
+          <button onclick="toggleCartDrawer()" class="relative p-2.5 text-slate-500 dark:text-slate-400 hover:text-emerald-500 hover:bg-slate-200 dark:hover:bg-slate-900/80 rounded-2xl transition" title="ตะกร้าสินค้า">
             <i class="fa-solid fa-bag-shopping text-lg"></i>
-            <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#090d16]">0</span>
+            <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-[#090d16]">0</span>
           </button>
         </div>
       </div>
@@ -102,24 +111,24 @@
 
     <!-- Mobile Search -->
     <div class="md:hidden relative">
-      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-      <input type="text" id="searchInputMobile" oninput="handleSearch()" placeholder="ค้นหาสินค้า..." class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-2xl text-sm focus:outline-none focus:border-fuchsia-500">
+      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <input type="text" id="searchInputMobile" oninput="handleSearch()" placeholder="ค้นหาสินค้า..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm focus:outline-none focus:border-fuchsia-500 text-slate-800 dark:text-slate-100">
     </div>
 
     <!-- Hero Banner -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 text-white p-8 sm:p-12 shadow-2xl border border-violet-900/40">
-      <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-fuchsia-600/15 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute right-1/3 -top-10 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-violet-950 to-slate-950 text-white p-8 sm:p-12 shadow-2xl border border-violet-900/40">
+      <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute right-1/3 -top-10 w-60 h-60 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
       
       <div class="relative z-10 max-w-2xl">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-fuchsia-500/10 backdrop-blur-md text-xs font-semibold rounded-full mb-4 text-fuchsia-300 border border-fuchsia-500/20">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-fuchsia-500/20 backdrop-blur-md text-xs font-semibold rounded-full mb-4 text-fuchsia-300 border border-fuchsia-500/30">
           <i class="fa-solid fa-sparkles text-fuchsia-400"></i> Next-Gen Online Marketplace
         </span>
         <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
           พื้นที่ปล่อยของสุดล้ำ <br><span class="gradient-text">ไร้ขีดจำกัดสำหรับทุกคน</span>
         </h1>
-        <p class="mt-3 text-slate-400 text-sm sm:text-base font-medium leading-relaxed">
-          เริ่มต้นเปิดร้านและลงขายสินค้าชิ้นแรกของคุณง่ายๆ ได้ทันที! พร้อมระบบอัปโหลดรูป ระบบแชตตรง และบันทึกข้อมูลอัตโนมัติ
+        <p class="mt-3 text-slate-300 text-sm sm:text-base font-medium leading-relaxed">
+          เริ่มต้นเปิดร้านและลงขายสินค้าชิ้นแรกของคุณง่ายๆ ได้ทันที! รองรับทั้งโหมดสว่างและมืด พร้อมระบบแชตและบันทึกอัตโนมัติ
         </p>
       </div>
     </div>
@@ -129,11 +138,11 @@
       <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar" id="categoryContainer"></div>
 
       <div class="flex items-center gap-3 self-end md:self-auto">
-        <div class="flex items-center gap-1.5 bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-800 text-xs">
+        <div class="flex items-center gap-1.5 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
           <span class="text-slate-400">งบไม่เกิน:</span>
-          <input type="number" id="maxPriceInput" oninput="renderProducts()" placeholder="สูงสุด ฿" class="w-20 bg-transparent outline-none font-bold text-fuchsia-400">
+          <input type="number" id="maxPriceInput" oninput="renderProducts()" placeholder="สูงสุด ฿" class="w-20 bg-transparent outline-none font-bold text-fuchsia-600 dark:text-fuchsia-400">
         </div>
-        <select id="sortSelect" onchange="renderProducts()" class="bg-slate-900/90 px-3 py-1.5 rounded-2xl border border-slate-800 text-xs font-semibold outline-none text-slate-300">
+        <select id="sortSelect" onchange="renderProducts()" class="bg-white dark:bg-slate-900 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-semibold outline-none text-slate-700 dark:text-slate-300">
           <option value="newest">มาใหม่ล่าสุด</option>
           <option value="price-asc">ราคา: ต่ำสุด - สูงสุด</option>
           <option value="price-desc">ราคา: สูงสุด - ต่ำสุด</option>
@@ -144,10 +153,10 @@
     <!-- Section Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h2 id="sectionTitle" class="text-xl font-bold tracking-tight text-slate-100">รายการสินค้าทั้งหมด</h2>
-        <p class="text-xs text-slate-400">คลิกที่สินค้าเพื่อดูรายละเอียด คอมเมนต์สอบถาม หรือติดต่อผู้ขาย</p>
+        <h2 id="sectionTitle" class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">รายการสินค้าทั้งหมด</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400">คลิกที่สินค้าเพื่อดูรายละเอียด คอมเมนต์สอบถาม หรือติดต่อผู้ขาย</p>
       </div>
-      <span id="productCount" class="text-xs font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-3.5 py-1 rounded-full">0 รายการ</span>
+      <span id="productCount" class="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-1 rounded-full">0 รายการ</span>
     </div>
 
     <!-- Product Grid -->
@@ -155,9 +164,9 @@
   </main>
 
   <!-- Modal: ล็อกอินอย่างง่าย -->
-  <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-slate-800">
-      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-200">
+  <div id="loginModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
@@ -165,18 +174,18 @@
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-fuchsia-600 to-violet-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-2 shadow-lg shadow-fuchsia-600/30">
           🔑
         </div>
-        <h3 class="text-xl font-black text-white">เข้าสู่ระบบ / ลงทะเบียน</h3>
-        <p class="text-xs text-slate-400 mt-1">กรอกชื่อและเบอร์โทรเพื่อเปิดใช้งาน (เข้าใหม่ข้อมูลไม่หาย)</p>
+        <h3 class="text-xl font-black text-slate-900 dark:text-white">เข้าสู่ระบบ / ลงทะเบียน</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">กรอกชื่อและเบอร์โทรเพื่อเปิดใช้งาน (เข้าใหม่ข้อมูลไม่หาย)</p>
       </div>
 
       <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold uppercase text-slate-400 mb-1">ชื่อของคุณหรือชื่อร้านค้า *</label>
-          <input type="text" id="loginUsernameInput" required placeholder="เช่น คุณเอ หรือ ร้าน A Shop" class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none text-slate-100">
+          <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">ชื่อของคุณหรือชื่อร้านค้า *</label>
+          <input type="text" id="loginUsernameInput" required placeholder="เช่น คุณเอ หรือ ร้าน A Shop" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none text-slate-800 dark:text-slate-100">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase text-slate-400 mb-1">เบอร์โทรศัพท์ หรือ Line ID *</label>
-          <input type="text" id="loginContactInput" required placeholder="เช่น 0812345678 หรือ @myline" class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none text-slate-100">
+          <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">เบอร์โทรศัพท์ หรือ Line ID *</label>
+          <input type="text" id="loginContactInput" required placeholder="เช่น 0812345678 หรือ @myline" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none text-slate-800 dark:text-slate-100">
         </div>
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white font-bold rounded-xl transition shadow-lg shadow-fuchsia-600/30 active:scale-95">
           เข้าสู่ระบบทันที
@@ -186,33 +195,33 @@
   </div>
 
   <!-- Modal: ลงขายสินค้า -->
-  <div id="sellModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-800 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeSellModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-slate-200 flex items-center justify-center transition">
+  <div id="sellModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeSellModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 flex items-center justify-center transition">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
       <div class="mb-6">
-        <h2 class="text-2xl font-black text-white flex items-center gap-2">
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-bolt text-fuchsia-500"></i> ลงขายสินค้าใหม่
         </h2>
-        <p class="text-xs text-slate-400 mt-1">เลือกรูปภาพและกรอกข้อมูลสินค้าของคุณได้เลย</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">เลือกรูปภาพและกรอกข้อมูลสินค้าของคุณได้เลย</p>
       </div>
 
       <form id="sellForm" onsubmit="handleCreateProduct(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">ชื่อสินค้า *</label>
-          <input type="text" required id="sellTitle" placeholder="เช่น หูฟังไร้สาย, เสื้อฮู้ด..." class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ชื่อสินค้า *</label>
+          <input type="text" required id="sellTitle" placeholder="เช่น หูฟังไร้สาย, เสื้อฮู้ด..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">ราคา (บาท) *</label>
-            <input type="number" required id="sellPrice" min="0" placeholder="0.00" class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ราคา (บาท) *</label>
+            <input type="number" required id="sellPrice" min="0" placeholder="0.00" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">หมวดหมู่ *</label>
-            <select id="sellCategory" class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">หมวดหมู่ *</label>
+            <select id="sellCategory" class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
               <option value="ไอที">ไอที & Gadget</option>
               <option value="แฟชั่น">แฟชั่น & เครื่องแต่งกาย</option>
               <option value="หนังสือ">หนังสือ & การเรียน</option>
@@ -222,29 +231,29 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">ชื่อผู้ขาย / ร้านค้า *</label>
-          <input type="text" required id="sellSeller" placeholder="เช่น ร้านคุณเอ..." class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ชื่อผู้ขาย / ร้านค้า *</label>
+          <input type="text" required id="sellSeller" placeholder="เช่น ร้านคุณเอ..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-fuchsia-400 mb-1">ช่องทางติดต่อ (เบอร์โทร หรือ Line ID) *</label>
-          <input type="text" required id="sellContact" placeholder="เช่น 0812345678 หรือ Line: @myline" class="w-full px-4 py-2.5 border border-fuchsia-900/50 rounded-xl bg-fuchsia-950/20 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-fuchsia-600 dark:text-fuchsia-400 mb-1">ช่องทางติดต่อ (เบอร์โทร หรือ Line ID) *</label>
+          <input type="text" required id="sellContact" placeholder="เช่น 0812345678 หรือ Line: @myline" class="w-full px-4 py-2.5 border border-fuchsia-300 dark:border-fuchsia-900/50 rounded-xl bg-fuchsia-50 dark:bg-fuchsia-950/20 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-rose-400 mb-1">รหัสลบสินค้า (เลข 4 หลัก) *</label>
-          <input type="password" maxlength="4" required id="sellPin" placeholder="1234 (ใช้สำหรับมากดลบภายหลัง)" class="w-full px-4 py-2.5 border border-rose-900/50 rounded-xl bg-rose-950/20 text-sm focus:border-rose-500 outline-none transition text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-rose-500 dark:text-rose-400 mb-1">รหัสลบสินค้า (เลข 4 หลัก) *</label>
+          <input type="password" maxlength="4" required id="sellPin" placeholder="1234 (ใช้สำหรับมากดลบภายหลัง)" class="w-full px-4 py-2.5 border border-rose-200 dark:border-rose-900/50 rounded-xl bg-rose-50 dark:bg-rose-950/20 text-sm focus:border-rose-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">รูปภาพสินค้า (อัปโหลดจากเครื่อง หรือ วางลิงก์) *</label>
-          <input type="file" id="sellFileInput" accept="image/*" onchange="handleImageFileSelect(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-950 file:text-violet-300 hover:file:bg-violet-900 cursor-pointer mb-2">
-          <input type="url" id="sellImage" placeholder="หรือวางลิงก์รูปภาพ https://..." class="w-full px-4 py-2 border border-slate-800 rounded-xl bg-slate-950 text-xs focus:border-fuchsia-500 outline-none transition text-slate-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">รูปภาพสินค้า (อัปโหลดจากเครื่อง หรือ วางลิงก์) *</label>
+          <input type="file" id="sellFileInput" accept="image/*" onchange="handleImageFileSelect(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-50 dark:file:bg-violet-950 file:text-violet-700 dark:file:text-violet-300 hover:file:bg-violet-100 cursor-pointer mb-2">
+          <input type="url" id="sellImage" placeholder="หรือวางลิงก์รูปภาพ https://..." class="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-xs focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100">
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">รายละเอียดสินค้า</label>
-          <textarea id="sellDesc" rows="3" placeholder="อธิบายสภาพสินค้า หรือเงื่อนไขนัดรับ..." class="w-full px-4 py-2.5 border border-slate-800 rounded-xl bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-100"></textarea>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">รายละเอียดสินค้า</label>
+          <textarea id="sellDesc" rows="3" placeholder="อธิบายสภาพสินค้า หรือเงื่อนไขนัดรับ..." class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950 text-sm focus:border-fuchsia-500 outline-none transition text-slate-800 dark:text-slate-100"></textarea>
         </div>
 
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white font-bold rounded-xl transition shadow-lg shadow-fuchsia-600/30 active:scale-98">
@@ -255,489 +264,48 @@
   </div>
 
   <!-- Modal: รายละเอียดสินค้า -->
-  <div id="productModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col md:flex-row max-h-[90vh] border border-slate-800">
-      <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition">
+  <div id="productModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col md:flex-row max-h-[90vh] border border-slate-200 dark:border-slate-800">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-200/80 dark:bg-slate-950/70 hover:bg-slate-300 dark:hover:bg-slate-950 text-slate-700 dark:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
-      <div class="md:w-1/2 bg-slate-950 flex items-center justify-center p-6 relative">
+      <div class="md:w-1/2 bg-slate-100 dark:bg-slate-950 flex items-center justify-center p-6 relative">
         <img id="modalImg" src="" class="max-h-64 md:max-h-full object-contain rounded-2xl">
       </div>
 
       <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <span id="modalCategory" class="text-[11px] font-bold tracking-wider uppercase text-fuchsia-400 bg-fuchsia-950/60 px-3 py-1 rounded-full border border-fuchsia-900/40"></span>
-            <button onclick="shareProduct()" class="text-xs font-semibold text-slate-400 hover:text-fuchsia-400 flex items-center gap-1 transition">
+            <span id="modalCategory" class="text-[11px] font-bold tracking-wider uppercase text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-950/60 px-3 py-1 rounded-full border border-fuchsia-200 dark:border-fuchsia-900/40"></span>
+            <button onclick="shareProduct()" class="text-xs font-semibold text-slate-400 hover:text-fuchsia-500 flex items-center gap-1 transition">
               <i class="fa-solid fa-share-nodes"></i> แชร์
             </button>
           </div>
 
           <div>
-            <h3 id="modalTitle" class="text-2xl font-black leading-snug text-white"></h3>
+            <h3 id="modalTitle" class="text-2xl font-black leading-snug text-slate-900 dark:text-white"></h3>
             <p id="modalPrice" class="text-3xl font-black gradient-text mt-1"></p>
-            <p id="modalDesc" class="text-sm text-slate-400 mt-3 leading-relaxed"></p>
+            <p id="modalDesc" class="text-sm text-slate-500 dark:text-slate-400 mt-3 leading-relaxed"></p>
           </div>
 
-          <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+          <div class="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-fuchsia-600 to-violet-600 text-white flex items-center justify-center font-bold text-base shadow-md">
                   <i class="fa-solid fa-store"></i>
                 </div>
                 <div>
-                  <p id="modalSeller" class="text-sm font-bold text-slate-200">ชื่อผู้ขาย</p>
-                  <p class="text-[11px] text-slate-500">ร้านค้าบน UniMarket</p>
+                  <p id="modalSeller" class="text-sm font-bold text-slate-800 dark:text-slate-200">ชื่อผู้ขาย</p>
+                  <p class="text-[11px] text-slate-400">ร้านค้าบน UniMarket</p>
                 </div>
               </div>
-              <button onclick="deleteProductPrompt()" class="text-[11px] text-rose-400 hover:text-rose-300 font-semibold underline">
+              <button onclick="deleteProductPrompt()" class="text-[11px] text-rose-500 dark:text-rose-400 hover:underline font-semibold">
                 ลบสินค้านี้
               </button>
             </div>
-            <div id="contactActionBox" class="pt-2 border-t border-slate-800/80"></div>
+            <div id="contactActionBox" class="pt-2 border-t border-slate-200 dark:border-slate-800/80"></div>
           </div>
 
-          <div class="pt-2 border-t border-slate-800">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-              <i class="fa-solid fa-comments text-violet-400"></i> สอบถาม / คอมเมนต์
-            </h4>
-            <div id="commentsList" class="space-y-2 max-h-36 overflow-y-auto pr-1 mb-3"></div>
-            
-            <form onsubmit="handleAddComment(event)" class="flex gap-2">
-              <input type="text" id="commentInput" required placeholder="พิมพ์ข้อความสอบถาม..." class="flex-1 px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs outline-none focus:border-fuchsia-500 text-slate-100">
-              <button type="submit" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition">ส่ง</button>
-            </form>
-          </div>
-        </div>
-
-        <div class="mt-6 flex gap-3">
-          <button onclick="addToCartFromModal()" class="flex-1 bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-fuchsia-600/30 flex items-center justify-center gap-2 active:scale-95">
-            <i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cart Drawer -->
-  <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-xs bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-800">
-    <div class="p-5 border-b border-slate-800 flex items-center justify-between">
-      <h3 class="font-black text-lg flex items-center gap-2 text-white">
-        <i class="fa-solid fa-bag-shopping text-emerald-400"></i> ตะกร้าของคุณ
-      </h3>
-      <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-200">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-    </div>
-
-    <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
-
-    <div class="p-5 border-t border-slate-800 space-y-4 bg-slate-950/60">
-      <div class="flex justify-between items-center font-bold">
-        <span class="text-sm text-slate-400">ยอดรวมทั้งหมด:</span>
-        <span id="cartTotal" class="text-xl font-black text-emerald-400">฿0</span>
-      </div>
-      <button onclick="handleCheckout()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white py-3 rounded-2xl font-bold transition shadow-lg shadow-emerald-500/20">
-        ชำระเงินทันที
-      </button>
-    </div>
-  </div>
-
-  <!-- JavaScript Logic -->
-  <script>
-    // ตั้งค่าสินค้าเริ่มต้นเป็นรายการว่างเปล่า ตามที่ขอ
-    const initialProducts = [];
-
-    let currentUser = JSON.parse(localStorage.getItem('unimarket_user')) || null;
-    let products = JSON.parse(localStorage.getItem('unimarket_products')) || initialProducts;
-    let wishlist = JSON.parse(localStorage.getItem('unimarket_wishlist')) || [];
-    let cart = [];
-    let currentCategory = 'ทั้งหมด';
-    let showWishlistOnly = false;
-    let activeModalProduct = null;
-    let uploadedImageBase64 = '';
-
-    const categories = ['ทั้งหมด', 'ไอที', 'แฟชั่น', 'หนังสือ', 'ของใช้ทั่วไป'];
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderUserProfile();
-      renderCategories();
-      renderProducts();
-      updateWishlistBadge();
-    });
-
-    function saveProductsToStorage() {
-      localStorage.setItem('unimarket_products', JSON.stringify(products));
-    }
-
-    function saveWishlistToStorage() {
-      localStorage.setItem('unimarket_wishlist', JSON.stringify(wishlist));
-      updateWishlistBadge();
-    }
-
-    function renderUserProfile() {
-      const area = document.getElementById('userProfileArea');
-      if (currentUser) {
-        area.innerHTML = `
-          <div class="flex items-center gap-2 bg-violet-950/60 px-3 py-1.5 rounded-2xl border border-violet-800/40">
-            <span class="text-xs font-bold text-violet-300 flex items-center gap-1">
-              <i class="fa-solid fa-user-circle"></i> ${currentUser.username}
-            </span>
-            <button onclick="handleLogout()" class="text-[10px] text-slate-400 hover:text-rose-400 font-bold ml-1">ออก</button>
-          </div>
-        `;
-        document.getElementById('sellSeller').value = currentUser.username;
-        document.getElementById('sellContact').value = currentUser.contact;
-      } else {
-        area.innerHTML = `
-          <button onclick="openLoginModal()" class="flex items-center gap-1.5 bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white text-xs font-bold px-3.5 py-2 rounded-2xl transition shadow-lg shadow-fuchsia-600/20 active:scale-95">
-            <i class="fa-solid fa-right-to-bracket"></i>
-            <span>เข้าสู่ระบบ</span>
-          </button>
-        `;
-      }
-    }
-
-    function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-    function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
-
-    function handleLoginSubmit(e) {
-      e.preventDefault();
-      currentUser = {
-        username: document.getElementById('loginUsernameInput').value.trim(),
-        contact: document.getElementById('loginContactInput').value.trim()
-      };
-      localStorage.setItem('unimarket_user', JSON.stringify(currentUser));
-      renderUserProfile();
-      closeLoginModal();
-    }
-
-    function handleLogout() {
-      currentUser = null;
-      localStorage.removeItem('unimarket_user');
-      renderUserProfile();
-    }
-
-    function updateWishlistBadge() {
-      const badge = document.getElementById('wishlistBadge');
-      badge.innerText = wishlist.length;
-      badge.classList.toggle('hidden', wishlist.length === 0);
-    }
-
-    function toggleWishlist(id, event) {
-      event.stopPropagation();
-      if (wishlist.includes(id)) {
-        wishlist = wishlist.filter(item => item !== id);
-      } else {
-        wishlist.push(id);
-      }
-      saveWishlistToStorage();
-      renderProducts();
-    }
-
-    function toggleWishlistOnly() {
-      showWishlistOnly = !showWishlistOnly;
-      const btn = document.getElementById('wishlistFilterBtn');
-      document.getElementById('sectionTitle').innerText = showWishlistOnly ? 'รายการที่ชอบของคุณ' : 'รายการสินค้าทั้งหมด';
-      btn.classList.toggle('text-rose-400', showWishlistOnly);
-      renderProducts();
-    }
-
-    function renderCategories() {
-      const container = document.getElementById('categoryContainer');
-      container.innerHTML = categories.map(cat => `
-        <button onclick="setCategory('${cat}')" class="px-5 py-2 rounded-2xl text-xs font-bold tracking-wide whitespace-nowrap transition-all ${currentCategory === cat ? 'bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white shadow-lg shadow-fuchsia-600/25' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'}">
-          ${cat}
-        </button>
-      `).join('');
-    }
-
-    function setCategory(cat) {
-      currentCategory = cat;
-      showWishlistOnly = false;
-      document.getElementById('wishlistFilterBtn').classList.remove('text-rose-400');
-      document.getElementById('sectionTitle').innerText = 'รายการสินค้าทั้งหมด';
-      renderCategories();
-      renderProducts();
-    }
-
-    function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      const maxPrice = Number(document.getElementById('maxPriceInput').value) || Infinity;
-      const sortValue = document.getElementById('sortSelect').value;
-
-      let filtered = products.filter(p => {
-        const matchCat = currentCategory === 'ทั้งหมด' || p.category === currentCategory;
-        const matchPrice = p.price <= maxPrice;
-        const matchWishlist = !showWishlistOnly || wishlist.includes(p.id);
-        return matchCat && matchPrice && matchWishlist;
-      });
-
-      if (sortValue === 'price-asc') filtered.sort((a, b) => a.price - b.price);
-      if (sortValue === 'price-desc') filtered.sort((a, b) => b.price - a.price);
-
-      document.getElementById('productCount').innerText = `${filtered.length} รายการ`;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full text-center py-20 bg-slate-900/50 rounded-3xl border border-dashed border-slate-800">
-            <div class="w-16 h-16 rounded-3xl bg-violet-950/50 text-fuchsia-400 flex items-center justify-center text-2xl mx-auto mb-3">
-              <i class="fa-solid fa-store-slash"></i>
-            </div>
-            <p class="text-slate-300 font-bold text-base">ยังไม่มีสินค้าในหมวดนี้</p>
-            <p class="text-xs text-slate-500 mt-1">กดปุ่ม "ลงขายสินค้า" ด้านบน เพื่อเปิดร้านเป็นคนแรกได้เลย!</p>
-          </div>
-        `;
-        return;
-      }
-
-      grid.innerHTML = filtered.map(p => {
-        const isLiked = wishlist.includes(p.id);
-        return `
-          <div onclick="openProductModal(${p.id})" class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 neon-border-glow shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer flex flex-col justify-between group relative">
-            <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-950/80 backdrop-blur-md flex items-center justify-center transition ${isLiked ? 'text-rose-500' : 'text-slate-400 hover:text-rose-400'}">
-              <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i>
-            </button>
-
-            <div class="relative aspect-square overflow-hidden bg-slate-950">
-              <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'">
-              <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-slate-950/80 backdrop-blur-md text-fuchsia-400 border border-fuchsia-900/40 px-3 py-1 rounded-full">${p.category}</span>
-            </div>
-            <div class="p-4">
-              <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1 mb-1"><i class="fa-solid fa-store"></i> ${p.seller || 'ร้านค้า'}</span>
-              <h4 class="font-bold text-sm line-clamp-1 group-hover:text-fuchsia-400 transition text-slate-100">${p.title}</h4>
-              <div class="flex items-center justify-between mt-2">
-                <p class="text-fuchsia-400 font-black text-lg">฿${p.price.toLocaleString()}</p>
-                <span class="w-8 h-8 rounded-xl bg-violet-950 text-violet-300 flex items-center justify-center text-xs group-hover:bg-fuchsia-600 group-hover:text-white transition">
-                  <i class="fa-solid fa-arrow-right"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function handleSearch() {
-      const query = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value).toLowerCase();
-      const filtered = products.filter(p => p.title.toLowerCase().includes(query) || (p.desc && p.desc.toLowerCase().includes(query)) || (p.seller && p.seller.toLowerCase().includes(query)));
-      
-      const grid = document.getElementById('productGrid');
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-500">ไม่พบสินค้าที่ตรงกับการค้นหา</div>`;
-        return;
-      }
-      grid.innerHTML = filtered.map(p => `
-        <div onclick="openProductModal(${p.id})" class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 shadow-sm cursor-pointer flex flex-col justify-between group">
-          <div class="relative aspect-square overflow-hidden bg-slate-950">
-            <img src="${p.image}" class="w-full h-full object-cover">
-          </div>
-          <div class="p-4">
-            <h4 class="font-bold text-sm line-clamp-1 text-slate-100">${p.title}</h4>
-            <p class="text-fuchsia-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function openProductModal(id) {
-      activeModalProduct = products.find(p => p.id === id);
-      document.getElementById('modalImg').src = activeModalProduct.image;
-      document.getElementById('modalTitle').innerText = activeModalProduct.title;
-      document.getElementById('modalPrice').innerText = `฿${activeModalProduct.price.toLocaleString()}`;
-      document.getElementById('modalCategory').innerText = activeModalProduct.category;
-      document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
-      document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
-
-      const contactBox = document.getElementById('contactActionBox');
-      const contactStr = activeModalProduct.contact || '';
-      
-      if (contactStr.includes('@') || contactStr.toLowerCase().includes('line')) {
-        const lineId = contactStr.replace('Line:', '').replace('@', '').trim();
-        contactBox.innerHTML = `
-          <a href="https://line.me/ti/p/~${lineId}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20">
-            <i class="fa-brands fa-line text-sm"></i> ทักแชต Line ผู้ขาย (${contactStr})
-          </a>
-        `;
-      } else {
-        contactBox.innerHTML = `
-          <a href="tel:${contactStr}" class="w-full bg-violet-600 hover:bg-violet-500 text-white py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-lg shadow-violet-600/20">
-            <i class="fa-solid fa-phone text-sm"></i> โทรติดต่อผู้ขาย (${contactStr})
-          </a>
-        `;
-      }
-
-      renderComments();
-      document.getElementById('productModal').classList.remove('hidden');
-    }
-
-    function renderComments() {
-      const container = document.getElementById('commentsList');
-      const comments = activeModalProduct.comments || [];
-      if (comments.length === 0) {
-        container.innerHTML = `<p class="text-[11px] text-slate-500 italic">ยังไม่มีคอมเมนต์ ร่วมสอบถามเป็นคนแรกได้เลย</p>`;
-        return;
-      }
-      container.innerHTML = comments.map(c => `
-        <div class="bg-slate-950 p-2.5 rounded-xl text-xs text-slate-300 border border-slate-800/80">
-          💬 ${c}
-        </div>
-      `).join('');
-    }
-
-    function handleAddComment(e) {
-      e.preventDefault();
-      const input = document.getElementById('commentInput');
-      if (!input.value.trim() || !activeModalProduct) return;
-      
-      const author = currentUser ? currentUser.username : 'บุคคลทั่วไป';
-      if (!activeModalProduct.comments) activeModalProduct.comments = [];
-      activeModalProduct.comments.push(`${author}: ${input.value.trim()}`);
-      
-      saveProductsToStorage();
-      renderComments();
-      input.value = '';
-    }
-
-    function closeProductModal() {
-      document.getElementById('productModal').classList.add('hidden');
-    }
-
-    function shareProduct() {
-      if (navigator.clipboard && activeModalProduct) {
-        navigator.clipboard.writeText(window.location.href);
-        alert(`คัดลอกลิงก์เรียบร้อย! ส่งแชร์สินค้า "${activeModalProduct.title}" ให้เพื่อนได้เลย`);
-      }
-    }
-
-    function deleteProductPrompt() {
-      if (!activeModalProduct) return;
-      const userPin = prompt('กรุณากรอกรหัสผ่าน 4 หลักของคุณเพื่อยืนยันการลบสินค้า:');
-      if (userPin === activeModalProduct.pin) {
-        products = products.filter(p => p.id !== activeModalProduct.id);
-        saveProductsToStorage();
-        renderProducts();
-        closeProductModal();
-        alert('ลบรายการสินค้าเรียบร้อยแล้ว');
-      } else if (userPin !== null) {
-        alert('รหัสผ่านไม่ถูกต้อง ไม่สามารถลบได้');
-      }
-    }
-
-    function handleImageFileSelect(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          uploadedImageBase64 = event.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function addToCartFromModal() {
-      if (!activeModalProduct) return;
-      cart.push(activeModalProduct);
-      updateCartUI();
-      closeProductModal();
-      toggleCartDrawer();
-    }
-
-    function updateCartUI() {
-      const badge = document.getElementById('cartBadge');
-      badge.innerText = cart.length;
-      badge.classList.toggle('hidden', cart.length === 0);
-
-      const itemsContainer = document.getElementById('cartItems');
-      itemsContainer.innerHTML = cart.map((item, index) => `
-        <div class="flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-slate-800">
-          <div class="flex items-center gap-3">
-            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
-            <div>
-              <p class="text-xs font-bold line-clamp-1 text-slate-200">${item.title}</p>
-              <p class="text-xs text-fuchsia-400 font-black">฿${item.price.toLocaleString()}</p>
-            </div>
-          </div>
-          <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-rose-400 p-2">
-            <i class="fa-solid fa-trash-can text-sm"></i>
-          </button>
-        </div>
-      `).join('');
-
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      document.getElementById('cartTotal').innerText = `฿${total.toLocaleString()}`;
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCartUI();
-    }
-
-    function toggleCartDrawer() {
-      document.getElementById('cartDrawer').classList.toggle('translate-x-full');
-    }
-
-    function openSellModal() {
-      if (!currentUser) {
-        alert('กรุณาเข้าสู่ระบบก่อนลงขายสินค้า');
-        openLoginModal();
-        return;
-      }
-      document.getElementById('sellModal').classList.remove('hidden');
-    }
-
-    function closeSellModal() {
-      document.getElementById('sellModal').classList.add('hidden');
-      uploadedImageBase64 = '';
-    }
-
-    function handleCreateProduct(e) {
-      e.preventDefault();
-      const imageUrl = uploadedImageBase64 || document.getElementById('sellImage').value || 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400';
-      
-      const newProduct = {
-        id: Date.now(),
-        title: document.getElementById('sellTitle').value,
-        price: Number(document.getElementById('sellPrice').value),
-        category: document.getElementById('sellCategory').value,
-        seller: document.getElementById('sellSeller').value,
-        contact: document.getElementById('sellContact').value,
-        pin: document.getElementById('sellPin').value,
-        image: imageUrl,
-        desc: document.getElementById('sellDesc').value,
-        comments: []
-      };
-      
-      products.unshift(newProduct);
-      saveProductsToStorage();
-      renderProducts();
-      closeSellModal();
-      document.getElementById('sellForm').reset();
-      
-      confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
-      alert('โพสต์สินค้าของคุณเรียบร้อยแล้ว!');
-    }
-
-    function handleCheckout() {
-      if (cart.length === 0) return alert('ไม่มีสินค้าในตะกร้า');
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-      alert('ชำระเงินสำเร็จ! ขอบคุณที่ใช้บริการครับ');
-      cart = [];
-      updateCartUI();
-      toggleCartDrawer();
-    }
-
-    function resetFilters() {
-      currentCategory = 'ทั้งหมด';
-      showWishlistOnly = false;
-      document.getElementById('maxPriceInput').value = '';
-      document.getElementById('sortSelect').value = 'newest';
-      document.getElementById('wishlistFilterBtn').classList.remove('text-rose-400');
-      document.getElementById('sectionTitle').innerText = 'รายการสินค้าทั้งหมด';
-      renderCategories();
-      renderProducts();
-    }
-  </script>
-</body>
-</html>
+          <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex
