@@ -701,29 +701,67 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   }
 
   function handleSearch() {
-    const query = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value).toLowerCase();
-    const filtered = products.filter(p => p.title.toLowerCase().includes(query) || (p.desc && p.desc.toLowerCase().includes(query)) || (p.seller && p.seller.toLowerCase().includes(query)));
+  const query = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value).toLowerCase().trim();
+  const grid = document.getElementById('productGrid');
 
-    const grid = document.getElementById('productGrid');
-    if (filtered.length === 0) {
-      grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-400 dark:text-slate-500">ไม่พบสินค้าที่ตรงกับการค้นหา</div>`;
-      return;
-    }
-    grid.innerHTML = filtered.map(p => {
-      const displayImage = (p.images && p.images.length > 0) ? p.images[0] : p.image;
-      return `
-        <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer flex flex-col justify-between group">
-          <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
-            <img src="${displayImage}" class="w-full h-full object-cover">
-          </div>
-          <div class="p-4">
-            <h4 class="font-bold text-sm line-clamp-1 text-slate-800 dark:text-slate-100">${p.title}</h4>
-            <p class="text-fuchsia-600 dark:text-fuchsia-400 font-black text-lg mt-1">฿${p.price.toLocaleString()}</p>
+  if (query === '') {
+    renderProducts();
+    return;
+  }
+
+  const filtered = products.filter(p => 
+    p.title.toLowerCase().includes(query) || 
+    (p.desc && p.desc.toLowerCase().includes(query)) || 
+    (p.seller && p.seller.toLowerCase().includes(query)) ||
+    (p.category && p.category.toLowerCase().includes(query))
+  );
+
+  document.getElementById('productCount').innerText = `${filtered.length} รายการ`;
+  document.getElementById('sectionTitle').innerText = `ผลการค้นหา: "${query}"`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-full text-center py-16 bg-white/50 dark:bg-slate-900/50 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800">
+        <div class="w-16 h-16 rounded-3xl bg-violet-100 dark:bg-violet-950/50 text-fuchsia-600 dark:text-fuchsia-400 flex items-center justify-center text-2xl mx-auto mb-3">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <p class="text-slate-700 dark:text-slate-300 font-bold text-base">ไม่พบสินค้าที่ตรงกับการค้นหา</p>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">ลองเปลี่ยนคำค้นหา หรือตรวจสอบตัวสะกดอีกครั้ง</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const isLiked = wishlist.includes(p.id);
+    const isSold = p.isSold || false;
+    const displayImage = (p.images && p.images.length > 0) ? p.images[0] : p.image;
+
+    return `
+      <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 neon-border-glow shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer flex flex-col justify-between group relative ${isSold ? 'opacity-75' : ''}">
+        <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center transition ${isLiked ? 'text-rose-500' : 'text-slate-400 hover:text-rose-500'}">
+          <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i>
+        </button>
+
+        <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
+          <img src="${displayImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ${isSold ? 'grayscale' : ''}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'">
+          <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-white/90 dark:bg-slate-950/80 backdrop-blur-md text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-200 dark:border-fuchsia-900/40 px-3 py-1 rounded-full">${p.category}</span>
+          ${isSold ? `<span class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center text-white font-black text-sm tracking-wider uppercase">SOLD OUT</span>` : ''}
+        </div>
+        <div class="p-4">
+          <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1 mb-1"><i class="fa-solid fa-store"></i> ${p.seller || 'ร้านค้า'}</span>
+          <h4 class="font-bold text-sm line-clamp-1 group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition text-slate-800 dark:text-slate-100">${p.title}</h4>
+          <div class="flex items-center justify-between mt-2">
+            <p class="text-fuchsia-600 dark:text-fuchsia-400 font-black text-lg">฿${p.price.toLocaleString()}</p>
+            <span class="w-8 h-8 rounded-xl bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300 flex items-center justify-center text-xs group-hover:bg-fuchsia-600 group-hover:text-white transition">
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
           </div>
         </div>
-      `;
-    }).join('');
-  }
+      </div>
+    `;
+  }).join('');
+}
 
   function openProductModal(id) {
     activeModalProduct = products.find(p => p.id === id);
