@@ -1290,6 +1290,36 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     renderProducts();
     showToast('รีเซ็ตการค้นหาแล้ว', 'info');
   }
+  </script> <!-- โค้ดเชื่อมต่อ Firebase สำหรับซิงค์ข้อมูลสินค้า -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGANlijuEBhQ6rMgPoosCmQ7kUMBgGpLQ",
+      authDomain: "unimarket-9f4d0.firebaseapp.com",
+      projectId: "unimarket-9f4d0",
+      storageBucket: "unimarket-9f4d0.firebasestorage.app",
+      messagingSenderId: "9057013617",
+      appId: "1:9057013617:web:d9989ad2c54959280b0d0",
+      measurementId: "G-94H3RRZMR6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ดึงข้อมูลสินค้าจาก Firestore มาแสดงแบบ Real-time
+    onSnapshot(collection(db, "products"), (snapshot) => {
+      window.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      if (typeof renderProducts === "function") {
+        renderProducts();
+      }
+    });
+
+    // ฟังก์ชันเพิ่มสินค้าลง Firebase
+    window.addProductToFirebase = async function(productData) {
+      await addDoc(collection(db, "products"), productData);
+    };
   </script>
 </body>
 </html>
