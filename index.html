@@ -769,10 +769,11 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   }).join('');
 }
 
- function openProductModal(id) {
+function openProductModal(id) {
     activeModalProduct = products.find(p => String(p.id) === String(id));
     
-    // โค้ดส่วนแสดงผล modal
+    if (!activeModalProduct) return; 
+    // โค้ดส่วนแสดงผล modal 
     const imgList = (activeModalProduct.images && activeModalProduct.images.length > 0) ? activeModalProduct.images : [activeModalProduct.image];
     document.getElementById('modalImg').src = imgList[0];
     document.getElementById('modalTitle').innerText = activeModalProduct.title;
