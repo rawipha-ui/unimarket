@@ -836,7 +836,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     renderComments();
     renderRelatedProducts();
     document.getElementById('productModal').classList.remove('hidden');
-  }
 
   function switchModalImage(imgUrl) {
     document.getElementById('modalImg').src = imgUrl;
@@ -1329,6 +1328,6 @@ window.addProductToFirebase = async function(productData) {
   await addDoc(collection(db, "products"), productData);
   console.log("ส่งข้อมูลสำเร็จแล้ว!");
 };
-  </script>
+</script>
 </body>
 </html>
