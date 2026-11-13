@@ -651,7 +651,7 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     const maxPrice = sliderVal >= 50000 ? Infinity : sliderVal;
     const sortValue = document.getElementById('sortSelect').value;
 
-    let filtered = products.filter(p => {
+    let filtered = (window.products || []).filter(p => {
       const matchCat = currentCategory === 'ทั้งหมด' || p.category === currentCategory;
       const matchPrice = p.price <= maxPrice;
       const matchWishlist = !showWishlistOnly || wishlist.includes(p.id);
