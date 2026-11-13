@@ -528,9 +528,16 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     }
   }
 
-  function saveProductsToStorage() {
-    localStorage.setItem('unimarket_products', JSON.stringify(products));
+ function saveProductsToStorage() {
+  localStorage.setItem('unimarket_products', JSON.stringify(products));
+  
+  if (products.length > 0 && window.addProductToFirebase) {
+    const latestProduct = products[products.length - 1];
+    if (!latestProduct.firebaseId) {
+      window.addProductToFirebase(latestProduct);
+    }
   }
+}
 
   function saveWishlistToStorage() {
     localStorage.setItem('unimarket_wishlist', JSON.stringify(wishlist));
