@@ -1324,9 +1324,11 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     });
 
     // ฟังก์ชันเพิ่มสินค้าลง Firebase
-    window.addProductToFirebase = async function(productData) {
-      await addDoc(collection(db, "products"), productData);
-    };
+window.addProductToFirebase = async function(productData) {
+  console.log("กำลังส่งข้อมูลขึ้น Firebase...", productData); 
+  await addDoc(collection(db, "products"), productData);
+  console.log("ส่งข้อมูลสำเร็จแล้ว!");
+};
   </script>
 </body>
 </html>
