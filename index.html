@@ -772,8 +772,10 @@ to { transform: translateY(0) scale(1); opacity: 1; }
 function openProductModal(id) {
     activeModalProduct = products.find(p => String(p.id) === String(id));
     
+    // เพิ่มบรรทัดนี้เพื่อป้องกันเว็บพังเวลาหาข้อมูลสินค้าไม่เจอ
     if (!activeModalProduct) return; 
-    // โค้ดส่วนแสดงผล modal 
+
+    // โค้ดส่วนแสดงผล modal ที่เหลือ...
     const imgList = (activeModalProduct.images && activeModalProduct.images.length > 0) ? activeModalProduct.images : [activeModalProduct.image];
     document.getElementById('modalImg').src = imgList[0];
     document.getElementById('modalTitle').innerText = activeModalProduct.title;
