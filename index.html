@@ -682,13 +682,12 @@ to { transform: translateY(0) scale(1); opacity: 1; }
       const displayImage = (p.images && p.images.length > 0) ? p.images[0] : p.image;
 
       return `
-        <div onclick="openProductModal(${p.id})" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 neon-border-glow shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer flex flex-col justify-between group relative ${isSold ? 'opacity-75' : ''}">
-          <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center transition ${isLiked ? 'text-rose-500' : 'text-slate-400 hover:text-rose-500'}">
-            <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i>
-          </button>
-
-          <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
-            <img src="${displayImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ${isSold ? 'grayscale' : ''}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400'">
+    <div onclick="openProductModal('${p.id}')" class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all cursor-pointer group relative">
+      <button onclick="toggleWishlist('${p.id}', event)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-colors shadow-sm">
+        <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i>
+      </button>
+      <div class="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-950">
+        <img src="${displayImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ${isSold ? 'grayscale' : ''}">
             <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-white/90 dark:bg-slate-950/80 backdrop-blur-md text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-200 dark:border-fuchsia-900/40 px-3 py-1 rounded-full">${p.category}</span>
             ${isSold ? `<span class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center text-white font-black text-sm tracking-wider uppercase">SOLD OUT</span>` : ''}
           </div>
