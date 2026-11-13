@@ -769,17 +769,18 @@ to { transform: translateY(0) scale(1); opacity: 1; }
   }).join('');
 }
 
-  function openProductModal(id) {
-    activeModalProduct = products.find(p => p.id === id);
+ function openProductModal(id) {
+    activeModalProduct = products.find(p => String(p.id) === String(id));
+    
+    // โค้ดส่วนแสดงผล modal
     const imgList = (activeModalProduct.images && activeModalProduct.images.length > 0) ? activeModalProduct.images : [activeModalProduct.image];
-
     document.getElementById('modalImg').src = imgList[0];
     document.getElementById('modalTitle').innerText = activeModalProduct.title;
     document.getElementById('modalPrice').innerText = `฿${activeModalProduct.price.toLocaleString()}`;
     document.getElementById('modalCategory').innerText = activeModalProduct.category;
     document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
     document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
-
+}
     // แสดง Badge รูปแบบการนัดรับ / จัดส่ง
     const delBadge = document.getElementById('modalDeliveryBadge');
     const dType = activeModalProduct.deliveryType || 'delivery';
