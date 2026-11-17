@@ -781,7 +781,18 @@ function openProductModal(id) {
     document.getElementById('modalCategory').innerText = activeModalProduct.category;
     document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
     document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
-}
+    const delBadge = document.getElementById('modalDeliveryBadge');
+    if (delBadge) {
+        const dType = activeModalProduct.deliveryType || 'delivery';
+        if (dType === 'pickup') {
+            delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full">รับเองที่ร้าน</span>`;
+        } else if (dType === 'both') {
+            delBadge.innerHTML = `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full">จัดส่งและรับเองได้</span>`;
+        } else {
+            delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ</span>`;
+        }
+    }
+} // ปิดฟังก์ชันตรงนี้ทีเดียวจบ
     // แสดง Badge รูปแบบการนัดรับ / จัดส่ง
     const delBadge = document.getElementById('modalDeliveryBadge');
     const dType = activeModalProduct.deliveryType || 'delivery';
