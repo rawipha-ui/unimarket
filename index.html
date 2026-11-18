@@ -1340,13 +1340,14 @@ window.openProductModal = function(id) {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // ดึงข้อมูลสินค้าจาก Firestore มาแสดงแบบ Real-time
-    onSnapshot(collection(db, "products"), (snapshot) => {
-      window.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      if (typeof renderProducts === "function") {
+// ดึงข้อมูลสินค้าจาก Firestore มาแสดงแบบ Real-time
+onSnapshot(collection(db, "products"), (snapshot) => {
+    window.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    products = window.products; // <-- เพิ่มบรรทัดนี้เพื่อให้ข้อมูลเชื่อมกัน
+    if (typeof renderProducts === "function") {
         renderProducts();
-      }
-    });
+    }
+});
 
     // ฟังก์ชันเพิ่มสินค้าลง Firebase
 window.addProductToFirebase = async function(productData) {
