@@ -1343,18 +1343,17 @@ window.openProductModal = function(id) {
 // ดึงข้อมูลสินค้าจาก Firestore มาแสดงแบบ Real-time
 onSnapshot(collection(db, "products"), (snapshot) => {
     window.products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    products = window.products; // <-- เพิ่มบรรทัดนี้เพื่อให้ข้อมูลเชื่อมกัน
+    products = window.products; // เชื่อมข้อมูลเข้าตัวแปรหลัก
     if (typeof renderProducts === "function") {
         renderProducts();
     }
 });
 
-    // ฟังก์ชันเพิ่มสินค้าลง Firebase
+// ฟังก์ชันเพิ่มสินค้าลง Firebase
 window.addProductToFirebase = async function(productData) {
-  console.log("กำลังส่งข้อมูลขึ้น Firebase...", productData); 
-  await addDoc(collection(db, "products"), productData);
-  console.log("ส่งข้อมูลสำเร็จแล้ว!");
+    console.log("กำลังส่งข้อมูลขึ้น Firebase...", productData);
+    await addDoc(collection(db, "products"), productData);
+    console.log("ส่งข้อมูลสำเร็จแล้ว!");
 };
-</script>
 </body>
 </html>
