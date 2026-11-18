@@ -805,30 +805,9 @@ window.openProductModal = function(id) {
         } else {
             delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ</span>`;
         }
-    }
-} // ปิดฟังก์ชันตรงนี้ทีเดียวจบ
-    // แสดง Badge รูปแบบการนัดรับ / จัดส่ง
-    const delBadge = document.getElementById('modalDeliveryBadge');
-    const dType = activeModalProduct.deliveryType || 'delivery';
-    if (dType === 'pickup') {
-      delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full"><i class="fa-solid fa-location-dot"></i> นัดรับ: ${activeModalProduct.pickupLocation || 'ในพื้นที่ใกล้เคียง'}</span>`;
-    } else if (dType === 'both') {
-      delBadge.innerHTML = `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full"><i class="fa-solid fa-truck"></i> พัสดุ / <i class="fa-solid fa-location-dot"></i> นัดรับ (${activeModalProduct.pickupLocation || 'นัดรับได้'})</span>`;
-    } else {
-      delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full"><i class="fa-solid fa-box"></i> จัดส่งพัสดุเท่านั้น</span>`;
-    }
-
-    const thumbContainer = document.getElementById('modalThumbnails');
-    if (imgList.length > 1) {
-      thumbContainer.innerHTML = imgList.map((imgUrl, idx) => `
-        <img src="${imgUrl}" onclick="switchModalImage('${imgUrl}')" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 border-slate-200 dark:border-slate-700 hover:border-fuchsia-500 transition">
-      `).join('');
-    } else {
-      thumbContainer.innerHTML = '';
-    }
 
     const soldBadge = document.getElementById('modalSoldBadge');
-    const addToCartBtn = document.getElementById('addToCartBtn');
+    constaddToCartBtn = document.getElementById('addToCartBtn');
     if (activeModalProduct.isSold) {
       soldBadge.classList.remove('hidden');
       addToCartBtn.disabled = true;
