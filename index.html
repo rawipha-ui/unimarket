@@ -797,15 +797,17 @@ window.openProductModal = function(id) {
     const modal = document.getElementById('productModal');
     if (modal) modal.classList.remove('hidden');
 };
-       const dType = activeModalProduct?.deliveryType || 'delivery';
-        if (dType === 'pickup') {
-            delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full">รับเองที่ร้าน</span>`;
-        } else if (dType === 'both') {
-            delBadge.innerHTML = `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full">จัดส่งและรับเองได้</span>`;
-        } else {
-            delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ</span>`;
-        }
-
+      const delBadge = document.getElementById('modalDeliveryBadge');
+if (delBadge) {
+    const dType = activeModalProduct?.deliveryType || 'delivery';
+    if (dType === 'pickup') {
+        delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full">นัดรับสินค้าเท่านั้น</span>`;
+    } else if (dType === 'both') {
+        delBadge.innerHTML = `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ & นัดรับได้</span>`;
+    } else {
+        delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุเท่านั้น</span>`;
+    }
+}
     const soldBadge = document.getElementById('modalSoldBadge');
     constaddToCartBtn = document.getElementById('addToCartBtn');
     if (activeModalProduct.isSold) {
