@@ -797,7 +797,7 @@ window.openProductModal = function(id) {
     const modal = document.getElementById('productModal');
     if (modal) modal.classList.remove('hidden');
 };
-        const dType = activeModalProduct?.deliveryType || 'delivery';
+       const dType = activeModalProduct?.deliveryType || 'delivery';
         if (dType === 'pickup') {
             delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full">รับเองที่ร้าน</span>`;
         } else if (dType === 'both') {
