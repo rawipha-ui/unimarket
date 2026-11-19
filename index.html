@@ -809,18 +809,21 @@ if (delBadge) {
     }
 }
     const soldBadge = document.getElementById('modalSoldBadge');
-    constaddToCartBtn = document.getElementById('addToCartBtn');
+const addToCartBtn = document.getElementById('addToCartBtn');
+
+if (activeModalProduct && soldBadge && addToCartBtn) {
     if (activeModalProduct.isSold) {
-      soldBadge.classList.remove('hidden');
-      addToCartBtn.disabled = true;
-      addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      addToCartBtn.innerText = 'สินค้าขายแล้ว';
+        soldBadge.classList.remove('hidden');
+        addToCartBtn.disabled = true;
+        addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        addToCartBtn.innerText = 'สินค้าขายแล้ว';
     } else {
-      soldBadge.classList.add('hidden');
-      addToCartBtn.disabled = false;
-      addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-      addToCartBtn.innerHTML = `<i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า`;
+        soldBadge.classList.add('hidden');
+        addToCartBtn.disabled = false;
+        addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        addToCartBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า';
     }
+}
 
     const contactBox = document.getElementById('contactActionBox');
     const contactStr = activeModalProduct.contact || '';
