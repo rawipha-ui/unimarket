@@ -768,7 +768,6 @@ to { transform: translateY(0) scale(1); opacity: 1; }
     `;
   }).join('');
 }
-
 window.openProductModal = function(id) {
     activeModalProduct = products.find(p => String(p.id) === String(id));
     
@@ -777,7 +776,7 @@ window.openProductModal = function(id) {
     const imgList = (activeModalProduct.images && activeModalProduct.images.length > 0) ? activeModalProduct.images : [activeModalProduct.image];
     document.getElementById('modalImg').src = imgList[0];
     document.getElementById('modalTitle').innerText = activeModalProduct.title;
-    document.getElementById('modalPrice').innerText = `฿${activeModalProduct.price.toLocaleString()}`;
+    document.getElementById('modalPrice').innerText = `฿${Number(activeModalProduct.price || 0).toLocaleString()}`;
     document.getElementById('modalCategory').innerText = activeModalProduct.category;
     document.getElementById('modalSeller').innerText = activeModalProduct.seller || 'ผู้ขายทั่วไป';
     document.getElementById('modalDesc').innerText = activeModalProduct.desc || 'ไม่มีรายละเอียดเพิ่มเติม';
@@ -797,17 +796,6 @@ window.openProductModal = function(id) {
     const modal = document.getElementById('productModal');
     if (modal) modal.classList.remove('hidden');
 };
-      const delBadge = document.getElementById('modalDeliveryBadge');
-if (delBadge) {
-    const dType = activeModalProduct?.deliveryType || 'delivery';
-    if (dType === 'pickup') {
-        delBadge.innerHTML = `<span class="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/80 px-2.5 py-1 rounded-full">นัดรับสินค้าเท่านั้น</span>`;
-    } else if (dType === 'both') {
-        delBadge.innerHTML = `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ & นัดรับได้</span>`;
-    } else {
-        delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุเท่านั้น</span>`;
-    }
-}
     const soldBadge = document.getElementById('modalSoldBadge');
 const addToCartBtn = document.getElementById('addToCartBtn');
 
