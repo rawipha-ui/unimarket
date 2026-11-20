@@ -792,7 +792,8 @@ window.openProductModal = function(id) {
         } else {
             delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ</span>`;
         }
-    }// จัดการสถานะสินค้าขายแล้ว
+    }
+  // จัดการสถานะสินค้าขายแล้ว
     const soldBadge = document.getElementById('modalSoldBadge');
     const addToCartBtn = document.getElementById('addToCartBtn');
     if (soldBadge && addToCartBtn) {
