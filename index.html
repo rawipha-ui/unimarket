@@ -793,26 +793,7 @@ window.openProductModal = function(id) {
             delBadge.innerHTML = `<span class="text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/80 px-2.5 py-1 rounded-full">จัดส่งพัสดุ</span>`;
         }
     }
-  // จัดการสถานะสินค้าขายแล้ว
-    const soldBadge = document.getElementById('modalSoldBadge');
-    const addToCartBtn = document.getElementById('addToCartBtn');
-    if (soldBadge && addToCartBtn) {
-        if (activeModalProduct.isSold) {
-            soldBadge.classList.remove('hidden');
-            addToCartBtn.disabled = true;
-            addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            addToCartBtn.innerText = 'สินค้าขายแล้ว';
-        } else {
-            soldBadge.classList.add('hidden');
-            addToCartBtn.disabled = false;
-            addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            addToCartBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า';
-        }
-    }
-
-    document.getElementById('productModal').classList.remove('hidden');
-};
-
+ 
     const modal = document.getElementById('productModal');
     if (modal) modal.classList.remove('hidden');
 };
