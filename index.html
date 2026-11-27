@@ -843,7 +843,7 @@ if (activeModalProduct && soldBadge && addToCartBtn) {
     const container = document.getElementById('commentsList');
     if (!container) return;
     
-    // ป้องกันกรณี activeModalProduct เป็นค่า null
+    // ป้องกันกรณี activeModalProduct เป็น null
     const comments = activeModalProduct?.comments || [];
     
     if (comments.length === 0) {
