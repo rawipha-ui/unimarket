@@ -819,18 +819,17 @@ if (activeModalProduct && soldBadge && addToCartBtn) {
       box.classList.add('hidden');
     }
   }
-
 function renderRelatedProducts() {
     const container = document.getElementById('relatedProductsList');
     if (!container) return;
 
-    // ป้องกันกรณี activeModalProduct เป็น null
-    if (!activeModalProduct) {
-        container.innerHTML = '';
+    // ป้องกันกรณี activeModalProduct เป็นค่า null หรือไม่มี category
+    if (!activeModalProduct || !activeModalProduct.category) {
+        container.innerHTML = `<p class="col-span-full text-xs text-slate-400 italic">ไม่มีสินค้าในหมวดหมู่เดียวกัน</p>`;
         return;
     }
 
-    // กรองสินค้าหมวดหมู่เดียวกัน แต่ไม่ใช่ชิ้นปัจจุบัน
+    // กรองสินค้าที่ปลอดภัย (เช็ก p ว่ามีค่าและไม่ใช่ null)
     const related = products.filter(p => p && p.category === activeModalProduct.category && p.id !== activeModalProduct.id).slice(0, 3);
 
     if (related.length === 0) {
@@ -843,13 +842,12 @@ function renderRelatedProducts() {
         return `
             <div onclick="openProductModal(${p.id})" class="bg-slate-50 dark:bg-slate-950 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-fuchsia-500 transition">
                 <img src="${img}" class="w-full h-16 object-cover rounded-xl mb-1.5">
-                <p class="text-[11px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${p.title}</p>
-                <p class="text-[11px] font-black text-fuchsia-600 dark:text-fuchsia-400">฿${Number(p.price).toLocaleString()}</p>
+                <p class="text-[11px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${p.title || 'สินค้า'}</p>
+                <p class="text-[11px] font-black text-fuchsia-600 dark:text-fuchsia-400">฿${Number(p.price || 0).toLocaleString()}</p>
             </div>
         `;
     }).join('');
 }
-
   function renderComments() {
     const container = document.getElementById('commentsList');
     if (!container) return;
