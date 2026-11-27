@@ -820,24 +820,35 @@ if (activeModalProduct && soldBadge && addToCartBtn) {
     }
   }
 
-  function renderRelatedProducts() {
+function renderRelatedProducts() {
     const container = document.getElementById('relatedProductsList');
-    const related = products.filter(p => p.category === activeModalProduct.category && p.id !== activeModalProduct.id).slice(0, 3);
-    if (related.length === 0) {
-      container.innerHTML = `<p class="col-span-3 text-[10px] text-slate-400 italic">ไม่มีสินค้าอื่นในหมวดนี้</p>`;
-      return;
+    if (!container) return;
+
+    // ป้องกันกรณี activeModalProduct เป็น null
+    if (!activeModalProduct) {
+        container.innerHTML = '';
+        return;
     }
-    container.innerHTML = related.map(r => {
-      const img = (r.images && r.images.length > 0) ? r.images[0] : r.image;
-      return `
-        <div onclick="openProductModal(${r.id})" class="bg-slate-100 dark:bg-slate-950 p-2 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-fuchsia-500 transition">
-          <img src="${img}" class="w-full h-14 object-cover rounded-lg mb-1">
-          <p class="text-[10px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${r.title}</p>
-          <p class="text-[10px] text-fuchsia-600 dark:text-fuchsia-400 font-black">฿${r.price.toLocaleString()}</p>
-        </div>
-      `;
+
+    // กรองสินค้าหมวดหมู่เดียวกัน แต่ไม่ใช่ชิ้นปัจจุบัน
+    const related = products.filter(p => p && p.category === activeModalProduct.category && p.id !== activeModalProduct.id).slice(0, 3);
+
+    if (related.length === 0) {
+        container.innerHTML = `<p class="col-span-full text-xs text-slate-400 italic">ไม่มีสินค้าในหมวดหมู่เดียวกัน</p>`;
+        return;
+    }
+
+    container.innerHTML = related.map(p => {
+        const img = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
+        return `
+            <div onclick="openProductModal(${p.id})" class="bg-slate-50 dark:bg-slate-950 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-fuchsia-500 transition">
+                <img src="${img}" class="w-full h-16 object-cover rounded-xl mb-1.5">
+                <p class="text-[11px] font-bold line-clamp-1 text-slate-800 dark:text-slate-200">${p.title}</p>
+                <p class="text-[11px] font-black text-fuchsia-600 dark:text-fuchsia-400">฿${Number(p.price).toLocaleString()}</p>
+            </div>
+        `;
     }).join('');
-  }
+}
 
   function renderComments() {
     const container = document.getElementById('commentsList');
