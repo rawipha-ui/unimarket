@@ -951,17 +951,29 @@ function renderRelatedProducts() {
 
   function deleteProductPrompt() {
     if (!activeModalProduct) return;
-    const userPin = prompt('กรุณากรอกรหัสผ่าน 4 หลักของคุณเพื่อยืนยันการลบสินค้า:');
-    if (userPin === activeModalProduct.pin) {
-      products = products.filter(p => p.id !== activeModalProduct.id);
-      saveProductsToStorage();
-      renderProducts();
-      closeProductModal();
-      showToast('ลบรายการสินค้าเรียบร้อยแล้ว', 'info');
-    } else if (userPin !== null) {
-      showToast('รหัสผ่านไม่ถูกต้อง ไม่สามารถลบสินค้าได้', 'error');
+
+    const inputPin = prompt('กรุณากรอกรหัส PIN 4 หลัก เพื่อยืนยันการลบสินค้า:');
+    if (inputPin === null) return;
+
+    if (inputPin === String(activeModalProduct.pin)) {
+        // ใช้ filter เพื่อตัดสินค้าชิ้นนี้ออก (ห้ามใช้การ push หรือบวกข้อมูลเพิ่มเด็ดขาด)
+        products = products.filter(p => p && p.id !== activeModalProduct.id);
+        
+        // บันทึกข้อมูลลง LocalStorage ใหม่
+        saveProductsToStorage();
+        
+        // หากใช้ Firebase ให้เรียกใช้ฟังก์ชันลบในฐานข้อมูลด้วย
+        if (typeof window.deleteProductFromFirebase === 'function') {
+            window.deleteProductFromFirebase(activeModalProduct.id);
+        }
+
+        closeProductModal();
+        renderProducts();
+        showToast('ลบสินค้าเรียบร้อยแล้ว!', 'success');
+    } else {
+        showToast('รหัส PIN ไม่ถูกต้อง ไม่สามารถลบสินค้าได้', 'error');
     }
-  }
+}
 
   function handleMultipleImagesSelect(e) {
     const files = Array.from(e.target.files);
