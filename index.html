@@ -785,7 +785,7 @@ if (activeModalProduct && soldBadge && addToCartBtn) {
     }
 }
     const contactBox = document.getElementById('contactActionBox');
-    const contactStr = activeModalProduct.contact || '';
+   const contactStr = activeModalProduct?.contact || '';
 
     if (contactStr.includes('@') || contactStr.toLowerCase().includes('line')) {
       const lineId = contactStr.replace('Line:', '').replace('@', '').trim();
